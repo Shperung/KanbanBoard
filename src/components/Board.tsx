@@ -1,12 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {DragDropContext} from 'react-beautiful-dnd';
 import Column from './Column';
+import {useTasks} from '../hooks/use-tasks';
 
 export default function Board() {
+  const {tasksTodo, tasksInProgress, tasksDode} = useTasks();
+
+  console.log('%c ||||| tasksTodo', 'color:yellowgreen', tasksTodo);
+  console.log('%c ||||| tasksInProgress', 'color:orange', tasksInProgress);
+  console.log('%c ||||| tasksDode', 'color:red', tasksDode);
+  console.log('---------------------------------');
+
   const [completed, setCompleted] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
-
-  console.log('%c ||||| incomplete', 'color:yellowgreen', incomplete);
 
   const [inReview, setInReview] = useState([]);
 
