@@ -42,6 +42,28 @@ export const TasksProvider = ({children}) => {
     }
   };
 
+  // Метод для створення нового завдання
+  const createTask = async (task) => {
+    try {
+      const response = await fetch('http://localhost:3000/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(task),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error creating task');
+      }
+
+      const newTask = await response.json();
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
     fetchStatuses();
@@ -49,7 +71,7 @@ export const TasksProvider = ({children}) => {
   }, []);
 
   return (
-    <TasksContext.Provider value={{tasks, statuses, responsibles}}>
+    <TasksContext.Provider value={{tasks, statuses, responsibles, createTask}}>
       {children}
     </TasksContext.Provider>
   );
