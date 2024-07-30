@@ -2,37 +2,35 @@
 import React, {useState} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 
-const COLUMN_ORDER = ['columnToDo', 'columnInProgress', 'columnDone'];
-
 const initialData = {
   columns: {
-    columnToDo: {
-      id: 'columnToDo',
+    'column-1': {
+      id: 'column-1',
       title: 'To Do',
       taskIds: ['task-1', 'task-2'],
     },
-    columnInProgress: {
-      id: 'columnInProgress',
+    'column-2': {
+      id: 'column-2',
       title: 'In Progress',
       taskIds: ['task-3'],
     },
-    columnDone: {
-      id: 'columnDone',
+    'column-3': {
+      id: 'column-3',
       title: 'Done',
       taskIds: ['task-4'],
     },
   },
-};
-
-const Board = () => {
-  const [data, setData] = useState(initialData);
-
-  const taskList = {
+  tasks: {
     'task-1': {id: 'task-1', content: 'Task 1'},
     'task-2': {id: 'task-2', content: 'Task 2'},
     'task-3': {id: 'task-3', content: 'Task 3'},
     'task-4': {id: 'task-4', content: 'Task 4'},
-  };
+  },
+  columnOrder: ['column-1', 'column-2', 'column-3'],
+};
+
+const Board = () => {
+  const [data, setData] = useState(initialData);
 
   const onDragEnd = (result) => {
     const {destination, source, draggableId} = result;
@@ -112,9 +110,9 @@ const Board = () => {
               padding: 8,
             }}
           >
-            {COLUMN_ORDER.map((columnId, index) => {
+            {data.columnOrder.map((columnId, index) => {
               const column = data.columns[columnId];
-              const tasks = column.taskIds.map((taskId) => taskList[taskId]);
+              const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
 
               return (
                 <Column
@@ -150,7 +148,7 @@ const Column = ({column, tasks, index}) => {
             padding: 8,
           }}
         >
-          <h3 style={{color: 'black'}}>{column.title}</h3>
+          <h3>{column.title}</h3>
           {tasks.map((task, index) => (
             <Task key={task.id} task={task} index={index} />
           ))}
