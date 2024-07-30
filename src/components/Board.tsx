@@ -83,7 +83,6 @@ export default function Board() {
         break;
     }
   }
-  return <div>test4.2</div>;
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
