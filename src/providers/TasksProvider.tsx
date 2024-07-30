@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, {createContext, useState, useEffect, useContext} from 'react';
+
 import {normalizeData} from '../helpers/normalizeData';
 import {mergeColumnsData} from '../helpers/mergeColumnsData';
 
@@ -143,24 +144,6 @@ export const TasksProvider = ({children}) => {
     }
   };
 
-  const createTask = async (task) => {
-    try {
-      const response = await fetch('http://localhost:3000/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(task),
-      });
-      if (!response.ok) {
-        throw new Error('Error creating task');
-      }
-      await fetchTasks();
-    } catch (error) {
-      console.error('Error creating task:', error);
-    }
-  };
-
   const saveTasksPositions = async (columns) => {
     try {
       const online = navigator.onLine;
@@ -181,6 +164,52 @@ export const TasksProvider = ({children}) => {
       }
     } catch (error) {
       console.error('Error save tasks tositions:', error);
+    }
+  };
+
+  const saveNewTaskIdToColumn = async (columnId, taskId) => {
+    const currentColumn = columns[columnId]?.taskIds;
+    const uniqueTaskIds = [...new Set([...currentColumn, taskId])];
+    const changedColumns = {
+      ...columns,
+      [columnId]: {
+        ...columns[columnId],
+        taskIds: uniqueTaskIds,
+      },
+    };
+
+    await saveTasksPositions(changedColumns);
+  };
+
+  const createTask = async (task) => {
+    try {
+      const online = navigator.onLine;
+
+      if (online) {
+        const response = await fetch('http://localhost:3000/tasks', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(task),
+        });
+        if (!response.ok) {
+          throw new Error('Error creating task');
+        }
+
+        const data = await response.json();
+        console.log('%c ||||| data', 'color:yellowgreen', data);
+        await fetchTasks();
+        await saveNewTaskIdToColumn(data.status, data.id);
+      } else {
+        const offlineTasks = {...task, id: `${Date.now()}`};
+        console.log('%c ||||| offlineTasks', 'color:yellowgreen', offlineTasks);
+        localStorage.setItem('tasks', JSON.stringify([...tasks, offlineTasks]));
+        await fetchTasks();
+        await saveNewTaskIdToColumn(offlineTasks.status, offlineTasks.id);
+      }
+    } catch (error) {
+      console.error('Error creating task:', error);
     }
   };
 

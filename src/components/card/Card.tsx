@@ -46,7 +46,8 @@ function bgcolorChange(props) {
 export default function Card({task, index}) {
   const {tasks, statuses, responsibles, createTask} = useTasksContext();
 
-  const user = responsibles.find((user) => user.id === task.responsible);
+  if (!task?.id) return null;
+  const user = responsibles.find((user) => user.id === task?.responsible);
 
   return (
     <Draggable draggableId={task?.id} index={index}>
