@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, {useState, useEffect} from 'react';
 import {DragDropContext} from 'react-beautiful-dnd';
-import Column from '../Column';
+import Column from '../column/Column';
 
 export default function Board() {
   const [completed, setCompleted] = useState([]);

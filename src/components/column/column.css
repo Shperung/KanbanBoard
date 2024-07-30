@@ -1,0 +1,7 @@
+.columnHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--color-text);
+  justify-content: center;
+}

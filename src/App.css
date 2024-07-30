@@ -1,6 +1,8 @@
 #root {
   --color-success: #01b587;
   --color-error: #ff4b4c;
+  --color-secondary: #023f66;
+  --color-text: black;
 
   max-width: 1280px;
   margin: 0 auto;

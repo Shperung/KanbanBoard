@@ -1,0 +1,8 @@
+.addTaskBtn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: var(--color-secondary);
+  font-size: 32px;
+  line-height: 1;
+}

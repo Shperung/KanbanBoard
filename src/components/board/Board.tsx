@@ -4,25 +4,17 @@ import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {useTasksContext} from '../../providers/TasksProvider';
 import './board.css';
 import {useTasks, COLUMNS_ORDER} from '../../hooks/use-tasks';
-import {Column} from '../Column';
+import {Column} from '../column/Column';
+import {Header} from '../header/Header';
 
 const Board = () => {
   const {normalizedTasks} = useTasksContext();
-  const isOnline = navigator.onLine;
 
   const {columns, setColumns, onDragEnd} = useTasks();
 
-  const networkStatusLabel = (
-    <sup
-      className={`networkStatus ${isOnline ? 'onlineStatus' : 'offlineStatus'}`}
-    >
-      ({isOnline ? 'online' : 'offline'})
-    </sup>
-  );
-
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <h1>Kanban board1 {networkStatusLabel}</h1>
+      <Header />
       <Droppable droppableId='all-columns' direction='horizontal'>
         {(provided) => (
           <div
