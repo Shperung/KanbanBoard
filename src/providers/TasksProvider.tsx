@@ -1,7 +1,7 @@
-//@ts-nocheck
-
+// @ts-nocheck
 import React, {createContext, useState, useEffect, useContext} from 'react';
 import {normalizeData} from '../helpers/normalizeData';
+import {mergeColumnsData} from '../helpers/mergeColumnsData';
 
 // Створюємо контекст
 const TasksContext = createContext();
@@ -75,8 +75,41 @@ export const TasksProvider = ({children}) => {
       if (online) {
         const response = await fetch('http://localhost:3000/columns');
         const data = await response.json();
-        localStorage.setItem('columns', JSON.stringify(data));
-        setColumns(data);
+
+        const localSorageColumns = localStorage.getItem('columns');
+        console.log(
+          '%c ||||| localSorageColumns',
+          'color:yellowgreen',
+          localSorageColumns
+        );
+        console.log('%c ||||| data', 'color:yellowgreen', data);
+        const localSorageColumnsData = JSON.parse(localSorageColumns);
+        const serverColumnToString = JSON.stringify(data);
+
+        const isEqualStingifyColumns =
+          localSorageColumns === serverColumnToString;
+        console.log(
+          '%c ||||| isEqualStingifyColumns',
+          'color:yellowgreen',
+          isEqualStingifyColumns
+        );
+
+        if (!isEqualStingifyColumns) {
+          const mergedColumns = mergeColumnsData(localSorageColumnsData, data);
+          console.log(
+            '%c ||||| mergedColumns',
+            'color:yellowgreen',
+            mergedColumns
+          );
+          if (mergedColumns) {
+            await saveTasksPositions(mergedColumns);
+            localStorage.setItem('columns', JSON.stringify(mergedColumns));
+            setColumns(mergedColumns);
+          }
+        } else {
+          localStorage.setItem('columns', JSON.stringify(data));
+          setColumns(data);
+        }
       } else {
         const data = localStorage.getItem('columns');
         if (data) {
@@ -151,11 +184,23 @@ export const TasksProvider = ({children}) => {
     }
   };
 
+  const handleGetData = async () => {
+    console.log('%c ||||| 111', 'color:yellowgreen', 111);
+    await Promise.all([
+      fetchTasks(),
+      fetchStatuses(),
+      fetchResponsibles(),
+      fetchColumns(),
+    ]);
+  };
+
   useEffect(() => {
-    fetchTasks();
-    fetchStatuses();
-    fetchResponsibles();
-    fetchColumns();
+    handleGetData();
+    window.addEventListener('online', handleGetData);
+
+    return () => {
+      window.removeEventListener('online', handleGetData);
+    };
   }, []);
 
   return (

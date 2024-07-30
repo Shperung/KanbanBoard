@@ -1,6 +1,7 @@
-//@ts-nocheck
+// @ts-nocheck
 import {useEffect, useState} from 'react';
 import {useTasksContext} from '../providers/TasksProvider';
+import {mergeColumnsData} from '../helpers/mergeColumnsData';
 
 const INIT_COLUMNS = {
   toDo: {
@@ -26,32 +27,7 @@ export function useTasks() {
 
   const [_, setColumns] = useState(INIT_COLUMNS);
 
-  // useEffect(() => {
-  //   setColumns({
-  //     ...columns,
-  //     toDo: {
-  //       ...columns.toDo,
-  //       taskIds: normalizedTasksList.filter(
-  //         (id) => normalizedTasks[id].status === 'toDo'
-  //       ),
-  //     },
-  //     inProgress: {
-  //       ...columns.inProgress,
-  //       taskIds: normalizedTasksList.filter(
-  //         (id) => normalizedTasks[id].status === 'inProgress'
-  //       ),
-  //     },
-  //     done: {
-  //       ...columns.done,
-  //       taskIds: normalizedTasksList.filter(
-  //         (id) => normalizedTasks[id].status === 'done'
-  //       ),
-  //     },
-  //   });
-  // }, [normalizedTasks, normalizedTasksList]);
-
-  console.log('%c ||||| columns', 'color:yellowgreen', columns);
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const {destination, source, draggableId} = result;
 
     if (!destination) {
@@ -83,8 +59,7 @@ export function useTasks() {
         [newColumn.id]: newColumn,
       };
 
-      setColumns(newColumnsData);
-      saveTasksPositions(newColumnsData);
+      await saveTasksPositions(newColumnsData);
 
       return;
     }
@@ -108,18 +83,9 @@ export function useTasks() {
       [newStart.id]: newStart,
       [newFinish.id]: newFinish,
     };
-    setColumns(newColumnsData);
-    saveTasksPositions(newColumnsData);
-  };
 
-  useEffect(() => {
-    // createTask({
-    //   title: 'Sample Task 5',
-    //   description: 'This is a sample task. 5',
-    //   status: 1,
-    //   responsible: 2,
-    // });
-  }, []);
+    await saveTasksPositions(newColumnsData);
+  };
 
   return {columns, setColumns, onDragEnd};
 }

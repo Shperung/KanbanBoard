@@ -65,21 +65,23 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "1",
-        "2",
-        "4",
-        "3"
+        "2"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
-      "taskIds": []
+      "taskIds": [
+        "1",
+        "4"
+      ]
     },
     "done": {
       "id": "done",
       "title": "Done",
-      "taskIds": []
+      "taskIds": [
+        "3"
+      ]
     }
   }
 }
