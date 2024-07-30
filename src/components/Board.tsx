@@ -41,7 +41,6 @@ export default function Board() {
 
     setNewState(destination.droppableId, task);
   };
-  return <div>test2</div>;
 
   function deletePreviousState(sourceDroppableId, taskId) {
     switch (sourceDroppableId) {
@@ -59,6 +58,7 @@ export default function Board() {
         break;
     }
   }
+  return <div>test3</div>;
   function setNewState(destinationDroppableId, task) {
     let updatedTask;
     switch (destinationDroppableId) {
