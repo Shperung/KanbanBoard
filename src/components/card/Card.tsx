@@ -10,7 +10,7 @@ import './card.css';
 
 const Container = styled.div`
   border-radius: 10px;
-  box-shadow: 5px 5px 5px 2px grey;
+  box-shadow: 1px 1px 5px 2px grey;
   padding: 8px;
   color: #000;
   margin-bottom: 8px;
@@ -47,6 +47,44 @@ export default function Card({task, index}) {
   const {tasks, statuses, responsibles, createTask} = useTasksContext();
 
   const user = responsibles.find((user) => user.id === task.responsible);
+
+  return (
+    <Draggable draggableId={task?.id} index={index}>
+      {(provided, snapshot) => (
+        <Container
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={{
+            ...provided.draggableProps.style,
+          }}
+          isDragging={snapshot.isDragging}
+        >
+          <div style={{display: 'flex', justifyContent: 'start', padding: 2}}>
+            <span>
+              <small>
+                #{task.id}
+                {'  '}
+              </small>
+            </span>
+          </div>
+          <div style={{display: 'flex', justifyContent: 'center', padding: 2}}>
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
+          </div>
+          <figure className='userAvatar'>
+            <figcaption>{user?.name}</figcaption>
+            <img
+              className='userAvatarImg'
+              src={user?.avatar}
+              alt={user?.name}
+            />
+          </figure>
+          {provided.placeholder}
+        </Container>
+      )}
+    </Draggable>
+  );
 
   return (
     <Draggable draggableId={`${task.id}`} key={task.id} index={index}>
