@@ -4,6 +4,14 @@ import {DragDropContext} from 'react-beautiful-dnd';
 import Column from './Column';
 import {useTasks} from '../hooks/use-tasks';
 
+function findItemById(id, array) {
+  return array.find((item) => item.id == id);
+}
+
+function removeItemById(id, array) {
+  return array.filter((item) => item.id != id);
+}
+
 export default function Board() {
   const {tasksTodo, tasksInProgress, tasksDode} = useTasks();
 
@@ -58,7 +66,6 @@ export default function Board() {
         break;
     }
   }
-  return <div>test3</div>;
   function setNewState(destinationDroppableId, task) {
     let updatedTask;
     switch (destinationDroppableId) {
@@ -76,13 +83,7 @@ export default function Board() {
         break;
     }
   }
-  function findItemById(id, array) {
-    return array.find((item) => item.id == id);
-  }
-
-  function removeItemById(id, array) {
-    return array.filter((item) => item.id != id);
-  }
+  return <div>test4.2</div>;
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
