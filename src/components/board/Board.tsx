@@ -3,122 +3,13 @@ import React, {useState, useEffect} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {useTasksContext} from '../../providers/TasksProvider';
 import './board.css';
-
-const INIT_COLUMNS = {
-  toDo: {
-    id: 'toDo',
-    title: 'To Do',
-    taskIds: [],
-  },
-  inProgress: {
-    id: 'inProgress',
-    title: 'In Progress',
-    taskIds: [],
-  },
-  done: {
-    id: 'done',
-    title: 'Done',
-    taskIds: [],
-  },
-};
-
-const COLUMNS_ORDER = Object.keys(INIT_COLUMNS);
+import {useTasks, COLUMNS_ORDER} from '../../hooks/use-tasks';
 
 const Board = () => {
-  const {
-    tasks,
-    statuses,
-    responsibles,
-    createTask,
-    normalizedTasks,
-    normalizedTasksList,
-  } = useTasksContext();
+  const {normalizedTasks} = useTasksContext();
   const isOnline = navigator.onLine;
-  const [columns, setColumns] = useState(INIT_COLUMNS);
 
-  useEffect(() => {
-    setColumns({
-      ...columns,
-      toDo: {
-        ...columns.toDo,
-        taskIds: normalizedTasksList.filter(
-          (id) => normalizedTasks[id].status === 'toDo'
-        ),
-      },
-      inProgress: {
-        ...columns.inProgress,
-        taskIds: normalizedTasksList.filter(
-          (id) => normalizedTasks[id].status === 'inProgress'
-        ),
-      },
-      done: {
-        ...columns.done,
-        taskIds: normalizedTasksList.filter(
-          (id) => normalizedTasks[id].status === 'done'
-        ),
-      },
-    });
-  }, [normalizedTasks, normalizedTasksList]);
-
-  console.log('%c ||||| columns', 'color:yellowgreen', columns);
-  const onDragEnd = (result) => {
-    const {destination, source, draggableId} = result;
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const startColumn = columns[source.droppableId];
-    const finishColumn = columns[destination.droppableId];
-
-    if (startColumn === finishColumn) {
-      const newTaskIds = Array.from(startColumn.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
-
-      const newColumn = {
-        ...startColumn,
-        taskIds: newTaskIds,
-      };
-
-      const newColumnsData = {
-        ...columns,
-        [newColumn.id]: newColumn,
-      };
-
-      setColumns(newColumnsData);
-
-      return;
-    }
-
-    const startTaskIds = Array.from(startColumn.taskIds);
-    startTaskIds.splice(source.index, 1);
-    const newStart = {
-      ...startColumn,
-      taskIds: startTaskIds,
-    };
-
-    const finishTaskIds = Array.from(finishColumn.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finishColumn,
-      taskIds: finishTaskIds,
-    };
-
-    const newColumnsData = {
-      ...columns,
-      [newStart.id]: newStart,
-      [newFinish.id]: newFinish,
-    };
-    setColumns(newColumnsData);
-  };
+  const {columns, setColumns, onDragEnd} = useTasks();
 
   const networkStatusLabel = (
     <sup
@@ -130,7 +21,7 @@ const Board = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <h1>Kanban board {networkStatusLabel}</h1>
+      <h1>Kanban board1 {networkStatusLabel}</h1>
       <Droppable droppableId='all-columns' direction='horizontal'>
         {(provided) => (
           <div

@@ -1,30 +1,124 @@
 //@ts-nocheck
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useTasksContext} from '../providers/TasksProvider';
 
-export function useTasks() {
-  const {tasks, statuses, responsibles, createTask} = useTasksContext();
+const INIT_COLUMNS = {
+  toDo: {
+    id: 'toDo',
+    title: 'To Do',
+    taskIds: [],
+  },
+  inProgress: {
+    id: 'inProgress',
+    title: 'In Progress',
+    taskIds: [],
+  },
+  done: {
+    id: 'done',
+    title: 'Done',
+    taskIds: [],
+  },
+};
 
-  console.log('%c *********************** tasks', 'color:yellowgreen', tasks);
-  console.log('%c *********************** statuses', 'color:orange', statuses);
-  console.log(
-    '%c *********************** responsibles',
-    'color:red',
-    responsibles
-  );
-  console.log('**************************************');
+export const COLUMNS_ORDER = Object.keys(INIT_COLUMNS);
+
+export function useTasks() {
+  const {normalizedTasksList, normalizedTasks} = useTasksContext();
+
+  const [columns, setColumns] = useState(INIT_COLUMNS);
 
   useEffect(() => {
-    createTask({
-      title: 'Sample Task 5',
-      description: 'This is a sample task. 5',
-      status: 1,
-      responsible: 2,
+    setColumns({
+      ...columns,
+      toDo: {
+        ...columns.toDo,
+        taskIds: normalizedTasksList.filter(
+          (id) => normalizedTasks[id].status === 'toDo'
+        ),
+      },
+      inProgress: {
+        ...columns.inProgress,
+        taskIds: normalizedTasksList.filter(
+          (id) => normalizedTasks[id].status === 'inProgress'
+        ),
+      },
+      done: {
+        ...columns.done,
+        taskIds: normalizedTasksList.filter(
+          (id) => normalizedTasks[id].status === 'done'
+        ),
+      },
     });
+  }, [normalizedTasks, normalizedTasksList]);
+
+  console.log('%c ||||| columns', 'color:yellowgreen', columns);
+  const onDragEnd = (result) => {
+    const {destination, source, draggableId} = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const startColumn = columns[source.droppableId];
+    const finishColumn = columns[destination.droppableId];
+
+    if (startColumn === finishColumn) {
+      const newTaskIds = Array.from(startColumn.taskIds);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, draggableId);
+
+      const newColumn = {
+        ...startColumn,
+        taskIds: newTaskIds,
+      };
+
+      const newColumnsData = {
+        ...columns,
+        [newColumn.id]: newColumn,
+      };
+
+      setColumns(newColumnsData);
+
+      return;
+    }
+
+    const startTaskIds = Array.from(startColumn.taskIds);
+    startTaskIds.splice(source.index, 1);
+    const newStart = {
+      ...startColumn,
+      taskIds: startTaskIds,
+    };
+
+    const finishTaskIds = Array.from(finishColumn.taskIds);
+    finishTaskIds.splice(destination.index, 0, draggableId);
+    const newFinish = {
+      ...finishColumn,
+      taskIds: finishTaskIds,
+    };
+
+    const newColumnsData = {
+      ...columns,
+      [newStart.id]: newStart,
+      [newFinish.id]: newFinish,
+    };
+    setColumns(newColumnsData);
+  };
+
+  useEffect(() => {
+    // createTask({
+    //   title: 'Sample Task 5',
+    //   description: 'This is a sample task. 5',
+    //   status: 1,
+    //   responsible: 2,
+    // });
   }, []);
 
-  const tasksTodo = tasks.filter((task) => task.status === 1);
-  const tasksInProgress = tasks.filter((task) => task.status === 2);
-  const tasksDone = tasks.filter((task) => task.status === 3);
-  return {tasksTodo, tasksInProgress, tasksDone};
+  return {columns, setColumns, onDragEnd};
 }
