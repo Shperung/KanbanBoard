@@ -25,7 +25,6 @@ export default function Board() {
         setIncomplete(json.filter((task) => !task.completed));
       });
   }, []);
-  return <div>test</div>;
 
   const handleDragEnd = (result) => {
     const {destination, source, draggableId} = result;
@@ -42,6 +41,7 @@ export default function Board() {
 
     setNewState(destination.droppableId, task);
   };
+  return <div>test2</div>;
 
   function deletePreviousState(sourceDroppableId, taskId) {
     switch (sourceDroppableId) {
