@@ -1,35 +1,65 @@
 // App.js
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {useTasksContext} from '../../providers/TasksProvider';
 
-const COLUMN_ORDER = ['toDo', 'inProgress', 'done'];
-
-const initialData = {
-  columns: {
-    toDo: {
-      id: 'toDo',
-      title: 'To Do',
-      taskIds: ['1'],
-    },
-    inProgress: {
-      id: 'inProgress',
-      title: 'In Progress',
-      taskIds: ['2'],
-    },
-    done: {
-      id: 'done',
-      title: 'Done',
-      taskIds: ['3', '4'],
-    },
+const INIT_COLUMNS = {
+  toDo: {
+    id: 'toDo',
+    title: 'To Do',
+    taskIds: [],
+  },
+  inProgress: {
+    id: 'inProgress',
+    title: 'In Progress',
+    taskIds: [],
+  },
+  done: {
+    id: 'done',
+    title: 'Done',
+    taskIds: [],
   },
 };
 
-const Board = () => {
-  const {tasks, statuses, responsibles, createTask, normalizedTasks} =
-    useTasksContext();
-  const [data, setData] = useState(initialData);
+const COLUMNS_ORDER = Object.keys(INIT_COLUMNS);
 
+const Board = () => {
+  const {
+    tasks,
+    statuses,
+    responsibles,
+    createTask,
+    normalizedTasks,
+    normalizedTasksList,
+  } = useTasksContext();
+
+  const [columns, setColumns] = useState(INIT_COLUMNS);
+
+  useEffect(() => {
+    setColumns({
+      ...columns,
+      toDo: {
+        ...columns.toDo,
+        taskIds: normalizedTasksList.filter(
+          (id) => normalizedTasks[id].status === 'toDo'
+        ),
+      },
+      inProgress: {
+        ...columns.inProgress,
+        taskIds: normalizedTasksList.filter(
+          (id) => normalizedTasks[id].status === 'inProgress'
+        ),
+      },
+      done: {
+        ...columns.done,
+        taskIds: normalizedTasksList.filter(
+          (id) => normalizedTasks[id].status === 'done'
+        ),
+      },
+    });
+  }, [normalizedTasks, normalizedTasksList]);
+
+  console.log('%c ||||| columns', 'color:yellowgreen', columns);
   const onDragEnd = (result) => {
     const {destination, source, draggableId} = result;
 
@@ -44,8 +74,8 @@ const Board = () => {
       return;
     }
 
-    const startColumn = data.columns[source.droppableId];
-    const finishColumn = data.columns[destination.droppableId];
+    const startColumn = columns[source.droppableId];
+    const finishColumn = columns[destination.droppableId];
 
     if (startColumn === finishColumn) {
       const newTaskIds = Array.from(startColumn.taskIds);
@@ -57,15 +87,13 @@ const Board = () => {
         taskIds: newTaskIds,
       };
 
-      const newState = {
-        ...data,
-        columns: {
-          ...data.columns,
-          [newColumn.id]: newColumn,
-        },
+      const newColumnsData = {
+        ...columns,
+        [newColumn.id]: newColumn,
       };
 
-      setData(newState);
+      setColumns(newColumnsData);
+
       return;
     }
 
@@ -83,16 +111,12 @@ const Board = () => {
       taskIds: finishTaskIds,
     };
 
-    const newState = {
-      ...data,
-      columns: {
-        ...data.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
-      },
+    const newColumnsData = {
+      ...columns,
+      [newStart.id]: newStart,
+      [newFinish.id]: newFinish,
     };
-
-    setData(newState);
+    setColumns(newColumnsData);
   };
 
   return (
@@ -108,8 +132,8 @@ const Board = () => {
               padding: 8,
             }}
           >
-            {COLUMN_ORDER.map((columnId, index) => {
-              const column = data.columns[columnId];
+            {COLUMNS_ORDER.map((columnId, index) => {
+              const column = columns[columnId];
               const tasks = column.taskIds.map(
                 (taskId) => normalizedTasks?.[taskId]
               );
