@@ -1,3 +1,16 @@
+.columnContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 1300px;
+  flex-direction: row;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.networkStatus {
+  font-size: 0.5em;
+}
+
 .onlineStatus {
   color: var(--color-success);
 }

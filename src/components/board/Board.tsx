@@ -16,7 +16,7 @@ function removeItemById(id, array) {
 
 export default function Board() {
   const {tasksTodo, tasksInProgress, tasksDone} = useTasks();
-
+  const isOnline = navigator.onLine;
   useEffect(() => {}, [tasksTodo, tasksInProgress, tasksDone]);
 
   console.log('%c ||||| tasksTodo', 'color:yellowgreen', tasksTodo);
@@ -79,27 +79,19 @@ export default function Board() {
     }
   }
 
+  const networkStatusLabel = (
+    <sup
+      className={`networkStatus ${isOnline ? 'onlineStatus' : 'offlineStatus'}`}
+    >
+      ({isOnline ? 'online' : 'offline'})
+    </sup>
+  );
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <h2 style={{textAlign: 'center'}}>
-        PROGRESS BOARD6 -
-        {navigator.onLine ? (
-          <small className='onlineStatus'> online</small>
-        ) : (
-          <small className='offlineStatus'> offline</small>
-        )}
-      </h2>
+      <h1>Kanban board {networkStatusLabel}</h1>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexDirection: 'row',
-          width: '1300px',
-          margin: '0 auto',
-        }}
-      >
+      <div className='columnContainer'>
         <Column title={'To Do'} tasks={tasksTodo} id={'1'} />
         <Column title={'In Progress'} tasks={tasksInProgress} id={'2'} />
         <Column title={'Done'} tasks={tasksDone} id={'3'} />
