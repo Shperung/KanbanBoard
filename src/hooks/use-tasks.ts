@@ -25,6 +25,6 @@ export function useTasks() {
 
   const tasksTodo = tasks.filter((task) => task.status === 1);
   const tasksInProgress = tasks.filter((task) => task.status === 2);
-  const tasksDode = tasks.filter((task) => task.status === 3);
-  return {tasksTodo, tasksInProgress, tasksDode};
+  const tasksDone = tasks.filter((task) => task.status === 3);
+  return {tasksTodo, tasksInProgress, tasksDone};
 }

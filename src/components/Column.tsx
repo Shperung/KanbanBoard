@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React from 'react';
 import styled from 'styled-components';
-import Card from './Card';
+import Card from './card/Card';
 import './scroll.css';
 import {Droppable} from 'react-beautiful-dnd';
 
@@ -50,7 +50,7 @@ export default function Column({title, tasks, id}) {
             isDraggingOver={snapshot.isDraggingOver}
           >
             {tasks.map((task, index) => (
-              <Card key={index} index={index} task={task} />
+              <Card key={task.id} index={index} task={task} />
             ))}
             {provided.placeholder}
           </TaskList>

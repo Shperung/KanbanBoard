@@ -4,6 +4,9 @@ import {Draggable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import UserPhoto from '../assets/avatar.jpeg';
+import {useTasksContext} from '../../providers/TasksProvider';
+
+import './card.css';
 
 const Container = styled.div`
   border-radius: 10px;
@@ -41,6 +44,10 @@ function bgcolorChange(props) {
 }
 
 export default function Card({task, index}) {
+  const {tasks, statuses, responsibles, createTask} = useTasksContext();
+
+  const user = responsibles.find((user) => user.id === task.responsible);
+
   return (
     <Draggable draggableId={`${task.id}`} key={task.id} index={index}>
       {(provided, snapshot) => (
@@ -59,13 +66,17 @@ export default function Card({task, index}) {
             </span>
           </div>
           <div style={{display: 'flex', justifyContent: 'center', padding: 2}}>
-            <TextContent>{task.title}</TextContent>
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
           </div>
-          <Icons>
-            <div>
-              <img src={UserPhoto} alt='Kravchuk Viktor' />
-            </div>
-          </Icons>
+          <figure className='userAvatar'>
+            <figcaption>{user?.name}</figcaption>
+            <img
+              className='userAvatarImg'
+              src={user?.avatar}
+              alt={user?.name}
+            />
+          </figure>
           {provided.placeholder}
         </Container>
       )}

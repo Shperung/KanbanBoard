@@ -1,8 +1,10 @@
 //@ts-nocheck
 import React, {useState, useEffect} from 'react';
 import {DragDropContext} from 'react-beautiful-dnd';
-import Column from './Column';
-import {useTasks} from '../hooks/use-tasks';
+import Column from '../Column';
+import {useTasks} from '../../hooks/use-tasks';
+
+import './board.css';
 
 function findItemById(id, array) {
   return array.find((item) => item.id == id);
@@ -13,26 +15,19 @@ function removeItemById(id, array) {
 }
 
 export default function Board() {
-  const {tasksTodo, tasksInProgress, tasksDode} = useTasks();
+  const {tasksTodo, tasksInProgress, tasksDone} = useTasks();
+
+  useEffect(() => {}, [tasksTodo, tasksInProgress, tasksDone]);
 
   console.log('%c ||||| tasksTodo', 'color:yellowgreen', tasksTodo);
   console.log('%c ||||| tasksInProgress', 'color:orange', tasksInProgress);
-  console.log('%c ||||| tasksDode', 'color:red', tasksDode);
+  console.log('%c ||||| tasksDone', 'color:red', tasksDone);
   console.log('---------------------------------');
 
   const [completed, setCompleted] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
 
   const [inReview, setInReview] = useState([]);
-
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => response.json())
-      .then((json) => {
-        setCompleted(json.filter((task) => task.completed));
-        setIncomplete(json.filter((task) => !task.completed));
-      });
-  }, []);
 
   const handleDragEnd = (result) => {
     const {destination, source, draggableId} = result;
@@ -86,7 +81,14 @@ export default function Board() {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <h2 style={{textAlign: 'center'}}>PROGRESS BOARD4</h2>
+      <h2 style={{textAlign: 'center'}}>
+        PROGRESS BOARD6 -
+        {navigator.onLine ? (
+          <small className='onlineStatus'> online</small>
+        ) : (
+          <small className='offlineStatus'> offline</small>
+        )}
+      </h2>
 
       <div
         style={{
@@ -98,9 +100,9 @@ export default function Board() {
           margin: '0 auto',
         }}
       >
-        <Column title={'To Do'} tasks={incomplete} id={'1'} />
-        <Column title={'In Progress'} tasks={completed} id={'2'} />
-        <Column title={'Done'} tasks={inReview} id={'3'} />
+        <Column title={'To Do'} tasks={tasksTodo} id={'1'} />
+        <Column title={'In Progress'} tasks={tasksInProgress} id={'2'} />
+        <Column title={'Done'} tasks={tasksDone} id={'3'} />
       </div>
     </DragDropContext>
   );

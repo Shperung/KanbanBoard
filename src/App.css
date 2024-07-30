@@ -1,4 +1,7 @@
 #root {
+  --color-success: #01b587;
+  --color-error: #ff4b4c;
+
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;

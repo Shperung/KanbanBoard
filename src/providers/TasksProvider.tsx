@@ -15,7 +15,7 @@ export const TasksProvider = ({children}) => {
   const fetchTasks = async () => {
     // Перевірка наявності інтернет-з'єднання
     const online = navigator.onLine;
-    console.log('%c pink online fetchTasks', 'color:yellowgreen', online);
+    console.log('%c  online fetchTasks', 'color:pink', online);
 
     try {
       if (online) {
@@ -37,7 +37,7 @@ export const TasksProvider = ({children}) => {
   // Метод для отримання statuses з API
   const fetchStatuses = async () => {
     const online = navigator.onLine;
-    console.log('%c pink online fetchStatuses', 'color:yellowgreen', online);
+    console.log('%c  online fetchStatuses', 'color:pink', online);
     try {
       if (online) {
         const response = await fetch('http://localhost:3000/statuses');
@@ -58,11 +58,8 @@ export const TasksProvider = ({children}) => {
   // Метод для отримання responsibles з API
   const fetchResponsibles = async () => {
     const online = navigator.onLine;
-    console.log(
-      '%c pink online fetchResponsibles',
-      'color:yellowgreen',
-      online
-    );
+
+    console.log('%c  online fetchResponsibles', 'color:pink', online);
     try {
       if (online) {
         const response = await fetch('http://localhost:3000/responsibles');
