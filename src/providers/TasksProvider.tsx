@@ -1,6 +1,7 @@
 //@ts-nocheck
 
 import React, {createContext, useState, useEffect, useContext} from 'react';
+import {normalizeData} from '../helpers/normalizeData';
 
 // Створюємо контекст
 const TasksContext = createContext();
@@ -8,6 +9,8 @@ const TasksContext = createContext();
 // Провайдер контексту
 export const TasksProvider = ({children}) => {
   const [tasks, setTasks] = useState([]);
+  const [normalizedTasks, setDormalizedTasks] = useState({});
+  const [normalizedTasksList, setDormalizedTasksList] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [responsibles, setResponsibles] = useState([]);
 
@@ -23,10 +26,19 @@ export const TasksProvider = ({children}) => {
         const data = await response.json();
         localStorage.setItem('tasks', JSON.stringify(data));
         setTasks(data);
+        const [normalizedTasks, normalizedTasksList] = normalizeData(data);
+
+        setDormalizedTasks(normalizedTasks);
+        setDormalizedTasksList(normalizedTasksList);
       } else {
         const data = localStorage.getItem('tasks');
         if (data) {
           setTasks(JSON.parse(data));
+          const [normalizedTasks, normalizedTasksList] = normalizeData(
+            JSON.parse(data)
+          );
+          setDormalizedTasks(normalizedTasks);
+          setDormalizedTasksList(normalizedTasksList);
         }
       }
     } catch (error) {
@@ -104,7 +116,9 @@ export const TasksProvider = ({children}) => {
   }, []);
 
   return (
-    <TasksContext.Provider value={{tasks, statuses, responsibles, createTask}}>
+    <TasksContext.Provider
+      value={{tasks, statuses, responsibles, createTask, normalizedTasks}}
+    >
       {children}
     </TasksContext.Provider>
   );

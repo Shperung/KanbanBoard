@@ -1,38 +1,34 @@
 // App.js
 import React, {useState} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import {useTasksContext} from '../../providers/TasksProvider';
 
-const COLUMN_ORDER = ['columnToDo', 'columnInProgress', 'columnDone'];
+const COLUMN_ORDER = ['toDo', 'inProgress', 'done'];
 
 const initialData = {
   columns: {
-    columnToDo: {
-      id: 'columnToDo',
+    toDo: {
+      id: 'toDo',
       title: 'To Do',
-      taskIds: ['task-1', 'task-2'],
+      taskIds: ['1'],
     },
-    columnInProgress: {
-      id: 'columnInProgress',
+    inProgress: {
+      id: 'inProgress',
       title: 'In Progress',
-      taskIds: ['task-3'],
+      taskIds: ['2'],
     },
-    columnDone: {
-      id: 'columnDone',
+    done: {
+      id: 'done',
       title: 'Done',
-      taskIds: ['task-4'],
+      taskIds: ['3', '4'],
     },
   },
 };
 
 const Board = () => {
+  const {tasks, statuses, responsibles, createTask, normalizedTasks} =
+    useTasksContext();
   const [data, setData] = useState(initialData);
-
-  const taskList = {
-    'task-1': {id: 'task-1', content: 'Task 1'},
-    'task-2': {id: 'task-2', content: 'Task 2'},
-    'task-3': {id: 'task-3', content: 'Task 3'},
-    'task-4': {id: 'task-4', content: 'Task 4'},
-  };
 
   const onDragEnd = (result) => {
     const {destination, source, draggableId} = result;
@@ -114,7 +110,9 @@ const Board = () => {
           >
             {COLUMN_ORDER.map((columnId, index) => {
               const column = data.columns[columnId];
-              const tasks = column.taskIds.map((taskId) => taskList[taskId]);
+              const tasks = column.taskIds.map(
+                (taskId) => normalizedTasks?.[taskId]
+              );
 
               return (
                 <Column
@@ -152,7 +150,7 @@ const Column = ({column, tasks, index}) => {
         >
           <h3 style={{color: 'black'}}>{column.title}</h3>
           {tasks.map((task, index) => (
-            <Task key={task.id} task={task} index={index} />
+            <Task key={task?.id} task={task} index={index} />
           ))}
           {provided.placeholder}
         </div>
@@ -163,7 +161,7 @@ const Column = ({column, tasks, index}) => {
 
 const Task = ({task, index}) => {
   return (
-    <Draggable draggableId={task.id} index={index}>
+    <Draggable draggableId={task?.id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
@@ -179,7 +177,7 @@ const Task = ({task, index}) => {
             ...provided.draggableProps.style,
           }}
         >
-          {task.content}
+          {task?.title}
         </div>
       )}
     </Draggable>

@@ -4,42 +4,42 @@
       "id": "1",
       "title": "Sample Task 1",
       "description": "This is a sample task. 1",
-      "status": 1,
+      "status": "toDo",
       "responsible": "1"
     },
     {
       "id": "2",
       "title": "Sample Task 2",
       "description": "This is a sample task. 2",
-      "status": 2,
+      "status": "inProgress",
       "responsible": "2"
     },
     {
       "id": "3",
       "title": "Sample Task 3",
       "description": "This is a sample task. 3",
-      "status": 3,
+      "status": "done",
       "responsible": "3"
     },
     {
       "id": "4",
       "title": "Sample Task 4",
       "description": "This is a sample task. 4",
-      "status": 1,
+      "status": "done",
       "responsible": "2"
     }
   ],
   "statuses": [
     {
-      "id": "1",
+      "id": "toDo",
       "name": "To Do"
     },
     {
-      "id": "2",
+      "id": "inProgress",
       "name": "In Progress"
     },
     {
-      "id": "3",
+      "id": "done",
       "name": "Done"
     }
   ],
