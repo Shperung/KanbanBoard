@@ -86,7 +86,7 @@ export default function Board() {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <h2 style={{textAlign: 'center'}}>PROGRESS BOARD</h2>
+      <h2 style={{textAlign: 'center'}}>PROGRESS BOARD4</h2>
 
       <div
         style={{

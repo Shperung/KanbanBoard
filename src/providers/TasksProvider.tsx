@@ -13,10 +13,22 @@ export const TasksProvider = ({children}) => {
 
   // Метод для отримання tasks з API
   const fetchTasks = async () => {
+    // Перевірка наявності інтернет-з'єднання
+    const online = navigator.onLine;
+    console.log('%c pink online fetchTasks', 'color:yellowgreen', online);
+
     try {
-      const response = await fetch('http://localhost:3000/tasks');
-      const data = await response.json();
-      setTasks(data);
+      if (online) {
+        const response = await fetch('http://localhost:3000/tasks');
+        const data = await response.json();
+        localStorage.setItem('tasks', JSON.stringify(data));
+        setTasks(data);
+      } else {
+        const data = localStorage.getItem('tasks');
+        if (data) {
+          setTasks(JSON.parse(data));
+        }
+      }
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
@@ -24,10 +36,20 @@ export const TasksProvider = ({children}) => {
 
   // Метод для отримання statuses з API
   const fetchStatuses = async () => {
+    const online = navigator.onLine;
+    console.log('%c pink online fetchStatuses', 'color:yellowgreen', online);
     try {
-      const response = await fetch('http://localhost:3000/statuses');
-      const data = await response.json();
-      setStatuses(data);
+      if (online) {
+        const response = await fetch('http://localhost:3000/statuses');
+        const data = await response.json();
+        localStorage.setItem('statuses', JSON.stringify(data));
+        setStatuses(data);
+      } else {
+        const data = localStorage.getItem('statuses');
+        if (data) {
+          setStatuses(JSON.parse(data));
+        }
+      }
     } catch (error) {
       console.error('Error fetching statuses:', error);
     }
@@ -35,10 +57,24 @@ export const TasksProvider = ({children}) => {
 
   // Метод для отримання responsibles з API
   const fetchResponsibles = async () => {
+    const online = navigator.onLine;
+    console.log(
+      '%c pink online fetchResponsibles',
+      'color:yellowgreen',
+      online
+    );
     try {
-      const response = await fetch('http://localhost:3000/responsibles');
-      const data = await response.json();
-      setResponsibles(data);
+      if (online) {
+        const response = await fetch('http://localhost:3000/responsibles');
+        const data = await response.json();
+        localStorage.setItem('responsibles', JSON.stringify(data));
+        setResponsibles(data);
+      } else {
+        const data = localStorage.getItem('responsibles');
+        if (data) {
+          setStatuses(JSON.parse(data));
+        }
+      }
     } catch (error) {
       console.error('Error fetching responsibles:', error);
     }
@@ -46,24 +82,22 @@ export const TasksProvider = ({children}) => {
 
   // Метод для створення нового завдання
   const createTask = async (task) => {
-    try {
-      const response = await fetch('http://localhost:3000/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(task),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error creating task');
-      }
-
-      const newTask = await response.json();
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-    } catch (error) {
-      console.error('Error creating task:', error);
-    }
+    // try {
+    //   const response = await fetch('http://localhost:3000/tasks', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(task),
+    //   });
+    //   if (!response.ok) {
+    //     throw new Error('Error creating task');
+    //   }
+    //   const newTask = await response.json();
+    //   setTasks((prevTasks) => [...prevTasks, newTask]);
+    // } catch (error) {
+    //   console.error('Error creating task:', error);
+    // }
   };
 
   useEffect(() => {
