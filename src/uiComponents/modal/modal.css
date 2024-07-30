@@ -1,0 +1,31 @@
+.Modal__Overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  place-content: center;
+}
+
+.Modal__Content {
+  color: black;
+  width: 600px;
+  margin: auto;
+  padding: 20px;
+  position: relative;
+  background-color: white;
+}
+
+.Modal__CloseButton {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: black;
+  padding: 0;
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}

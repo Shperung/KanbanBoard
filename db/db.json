@@ -27,6 +27,13 @@
       "description": "This is a sample task. 4",
       "status": "done",
       "responsible": "2"
+    },
+    {
+      "id": "bd3e",
+      "title": "hfgh",
+      "description": "hfghfg",
+      "responsible": "",
+      "status": "toDo"
     }
   ],
   "statuses": [
@@ -59,5 +66,29 @@
       "name": "Antony Starr",
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/6/63/Antony_Starr_%28cropped%29.jpg"
     }
-  ]
+  ],
+  "columns": {
+    "toDo": {
+      "id": "toDo",
+      "title": "To Do",
+      "taskIds": [
+        "1"
+      ]
+    },
+    "inProgress": {
+      "id": "inProgress",
+      "title": "In Progress",
+      "taskIds": [
+        "2"
+      ]
+    },
+    "done": {
+      "id": "done",
+      "title": "Done",
+      "taskIds": [
+        "3",
+        "4"
+      ]
+    }
+  }
 }
