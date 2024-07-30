@@ -1,7 +1,8 @@
-// App.js
+//@ts-nocheck
 import React, {useState, useEffect} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {useTasksContext} from '../../providers/TasksProvider';
+import './board.css';
 
 const INIT_COLUMNS = {
   toDo: {
@@ -32,7 +33,7 @@ const Board = () => {
     normalizedTasks,
     normalizedTasksList,
   } = useTasksContext();
-
+  const isOnline = navigator.onLine;
   const [columns, setColumns] = useState(INIT_COLUMNS);
 
   useEffect(() => {
@@ -119,8 +120,17 @@ const Board = () => {
     setColumns(newColumnsData);
   };
 
+  const networkStatusLabel = (
+    <sup
+      className={`networkStatus ${isOnline ? 'onlineStatus' : 'offlineStatus'}`}
+    >
+      ({isOnline ? 'online' : 'offline'})
+    </sup>
+  );
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <h1>Kanban board {networkStatusLabel}</h1>
       <Droppable droppableId='all-columns' direction='horizontal'>
         {(provided) => (
           <div
