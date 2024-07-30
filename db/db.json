@@ -27,13 +27,6 @@
       "description": "This is a sample task. 4",
       "status": "done",
       "responsible": "2"
-    },
-    {
-      "id": "bd3e",
-      "title": "hfgh",
-      "description": "hfghfg",
-      "responsible": "",
-      "status": "toDo"
     }
   ],
   "statuses": [
@@ -72,23 +65,21 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "1"
+        "1",
+        "2",
+        "4",
+        "3"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
-      "taskIds": [
-        "2"
-      ]
+      "taskIds": []
     },
     "done": {
       "id": "done",
       "title": "Done",
-      "taskIds": [
-        "3",
-        "4"
-      ]
+      "taskIds": []
     }
   }
 }

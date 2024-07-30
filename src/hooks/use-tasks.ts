@@ -20,36 +20,35 @@ const INIT_COLUMNS = {
   },
 };
 
-export const COLUMNS_ORDER = Object.keys(INIT_COLUMNS);
-
 export function useTasks() {
-  const {normalizedTasksList, normalizedTasks} = useTasksContext();
+  const {normalizedTasksList, normalizedTasks, columns, saveTasksPositions} =
+    useTasksContext();
 
-  const [columns, setColumns] = useState(INIT_COLUMNS);
+  const [_, setColumns] = useState(INIT_COLUMNS);
 
-  useEffect(() => {
-    setColumns({
-      ...columns,
-      toDo: {
-        ...columns.toDo,
-        taskIds: normalizedTasksList.filter(
-          (id) => normalizedTasks[id].status === 'toDo'
-        ),
-      },
-      inProgress: {
-        ...columns.inProgress,
-        taskIds: normalizedTasksList.filter(
-          (id) => normalizedTasks[id].status === 'inProgress'
-        ),
-      },
-      done: {
-        ...columns.done,
-        taskIds: normalizedTasksList.filter(
-          (id) => normalizedTasks[id].status === 'done'
-        ),
-      },
-    });
-  }, [normalizedTasks, normalizedTasksList]);
+  // useEffect(() => {
+  //   setColumns({
+  //     ...columns,
+  //     toDo: {
+  //       ...columns.toDo,
+  //       taskIds: normalizedTasksList.filter(
+  //         (id) => normalizedTasks[id].status === 'toDo'
+  //       ),
+  //     },
+  //     inProgress: {
+  //       ...columns.inProgress,
+  //       taskIds: normalizedTasksList.filter(
+  //         (id) => normalizedTasks[id].status === 'inProgress'
+  //       ),
+  //     },
+  //     done: {
+  //       ...columns.done,
+  //       taskIds: normalizedTasksList.filter(
+  //         (id) => normalizedTasks[id].status === 'done'
+  //       ),
+  //     },
+  //   });
+  // }, [normalizedTasks, normalizedTasksList]);
 
   console.log('%c ||||| columns', 'color:yellowgreen', columns);
   const onDragEnd = (result) => {
@@ -85,6 +84,7 @@ export function useTasks() {
       };
 
       setColumns(newColumnsData);
+      saveTasksPositions(newColumnsData);
 
       return;
     }
@@ -109,6 +109,7 @@ export function useTasks() {
       [newFinish.id]: newFinish,
     };
     setColumns(newColumnsData);
+    saveTasksPositions(newColumnsData);
   };
 
   useEffect(() => {

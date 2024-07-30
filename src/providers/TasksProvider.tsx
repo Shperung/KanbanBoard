@@ -13,6 +13,7 @@ export const TasksProvider = ({children}) => {
   const [normalizedTasksList, setDormalizedTasksList] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [responsibles, setResponsibles] = useState([]);
+  const [columns, setColumns] = useState(null);
 
   // Метод для отримання tasks з API
   const fetchTasks = async () => {
@@ -66,6 +67,26 @@ export const TasksProvider = ({children}) => {
       console.error('Error fetching statuses:', error);
     }
   };
+  // Метод для отримання statuses з API
+  const fetchColumns = async () => {
+    const online = navigator.onLine;
+    console.log('%c  online fetchColumns', 'color:pink', online);
+    try {
+      if (online) {
+        const response = await fetch('http://localhost:3000/columns');
+        const data = await response.json();
+        localStorage.setItem('columns', JSON.stringify(data));
+        setColumns(data);
+      } else {
+        const data = localStorage.getItem('columns');
+        if (data) {
+          setColumns(JSON.parse(data));
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching columns:', error);
+    }
+  };
 
   // Метод для отримання responsibles з API
   const fetchResponsibles = async () => {
@@ -107,10 +128,34 @@ export const TasksProvider = ({children}) => {
     }
   };
 
+  const saveTasksPositions = async (columns) => {
+    try {
+      const online = navigator.onLine;
+      setColumns(columns);
+      localStorage.setItem('columns', JSON.stringify(columns));
+      if (online) {
+        const response = await fetch('http://localhost:3000/columns', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(columns),
+        });
+        if (!response.ok) {
+          throw new Error('Error save tasks tositions');
+        }
+        await fetchTasks();
+      }
+    } catch (error) {
+      console.error('Error save tasks tositions:', error);
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
     fetchStatuses();
     fetchResponsibles();
+    fetchColumns();
   }, []);
 
   return (
@@ -119,9 +164,11 @@ export const TasksProvider = ({children}) => {
         tasks,
         statuses,
         responsibles,
+        columns,
         createTask,
         normalizedTasks,
         normalizedTasksList,
+        saveTasksPositions,
       }}
     >
       {children}

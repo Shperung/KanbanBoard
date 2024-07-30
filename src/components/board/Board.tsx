@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {useTasksContext} from '../../providers/TasksProvider';
 import './board.css';
-import {useTasks, COLUMNS_ORDER} from '../../hooks/use-tasks';
+import {useTasks} from '../../hooks/use-tasks';
 import {Column} from '../column/Column';
 import {Header} from '../header/Header';
 
@@ -11,7 +11,9 @@ const Board = () => {
   const {normalizedTasks} = useTasksContext();
 
   const {columns, setColumns, onDragEnd} = useTasks();
+  if (!columns) return null;
 
+  const columnsKeys = Object.keys(columns);
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Header />
@@ -26,7 +28,7 @@ const Board = () => {
               padding: 8,
             }}
           >
-            {COLUMNS_ORDER.map((columnId, index) => {
+            {columnsKeys.map((columnId, index) => {
               const column = columns[columnId];
               const tasks = column.taskIds.map(
                 (taskId) => normalizedTasks?.[taskId]
