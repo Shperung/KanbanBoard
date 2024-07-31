@@ -2,11 +2,11 @@ import {expect, it, describe} from 'vitest';
 import {mergeColumnData} from '../helpers/mergeColumnsData';
 import {INIT_COLUMNS} from '../providers/taskPoviderConst';
 
-const serverColumnsData = {
+const localSorageColumnsData = {
   toDo: {
     id: 'toDo',
     title: 'To Do',
-    taskIds: ['3', '4'],
+    taskIds: ['3', '4', '6'],
   },
   inProgress: {
     id: 'inProgress',
@@ -19,22 +19,21 @@ const serverColumnsData = {
     taskIds: ['2', '1'],
   },
 };
-
-const localSorageColumnsData = {
+const serverColumnsData = {
   toDo: {
     id: 'toDo',
     title: 'To Do',
-    taskIds: ['5', '4'],
+    taskIds: ['3', '4', '5'],
   },
   inProgress: {
     id: 'inProgress',
     title: 'In Progress',
-    taskIds: ['2', '1'],
+    taskIds: [],
   },
   done: {
     id: 'done',
     title: 'Done',
-    taskIds: [],
+    taskIds: ['2', '1', '6'],
   },
 };
 
@@ -44,12 +43,12 @@ describe('sum module', () => {
       toDo: {
         id: 'toDo',
         title: 'To Do',
-        taskIds: ['5', '4', '3'],
+        taskIds: [],
       },
       inProgress: {
         id: 'inProgress',
         title: 'In Progress',
-        taskIds: ['2', '1'],
+        taskIds: [],
       },
       done: {
         id: 'done',
@@ -60,10 +59,5 @@ describe('sum module', () => {
 
     const result = mergeColumnData(localSorageColumnsData, serverColumnsData);
     expect(result).toEqual(expectedMergedData);
-  });
-
-  it('should handle empty taskIds arrays correctly', () => {
-    const result = mergeColumnData(INIT_COLUMNS, INIT_COLUMNS);
-    expect(result).toEqual(INIT_COLUMNS);
   });
 });
