@@ -2,8 +2,7 @@ import {useTasksContext} from '../providers/TasksProvider';
 import {normalizeData} from '../helpers/normalizeData';
 
 export function useTasks() {
-  const {tasks, columns, updateStatusTask, saveTasksPositions} =
-    useTasksContext();
+  const {tasks, columns, updateStatusTask, saveColumns} = useTasksContext();
 
   const [normalizedTasks] = normalizeData(tasks);
 
@@ -40,7 +39,7 @@ export function useTasks() {
         [newColumn.id]: newColumn,
       };
 
-      await saveTasksPositions(newColumnsData);
+      await saveColumns(newColumnsData);
       await updateStatusTask(draggableId, destination.droppableId);
 
       return;
@@ -66,7 +65,7 @@ export function useTasks() {
       [newStart.id]: newStart,
       [newFinish.id]: newFinish,
     };
-    await saveTasksPositions(newColumnsData);
+    await saveColumns(newColumnsData);
 
     await updateStatusTask(draggableId, destination.droppableId);
   };

@@ -29,7 +29,7 @@ export const fetchColumns = async (
       //   const mergedColumns = mergeColumnsData(localSorageColumnsData, data);
 
       //   if (mergedColumns) {
-      //     await saveTasksPositions(mergedColumns);
+      //     await saveColumns(mergedColumns);
       //     localStorage.setItem('columns', JSON.stringify(mergedColumns));
       //     setColumns(mergedColumns);
       //   }

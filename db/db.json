@@ -27,6 +27,13 @@
       "responsible": "3",
       "description": "fdfdsffdsg",
       "status": "done"
+    },
+    {
+      "id": "a345",
+      "title": "111",
+      "description": "111",
+      "responsible": "1",
+      "status": "toDo"
     }
   ],
   "responsibles": [
@@ -52,7 +59,8 @@
       "title": "To Do",
       "taskIds": [
         "2",
-        "1"
+        "1",
+        "a345"
       ]
     },
     "inProgress": {

@@ -6,51 +6,24 @@ import React, {
   ReactNode,
 } from 'react';
 
-import {mergeColumnsData} from '../helpers/mergeColumnsData';
-import {StatusesType, TasksContextType, TasksType} from './taskaTypes';
+import {
+  ColumnsType,
+  StatusColumnType,
+  TasksContextType,
+  TasksType,
+} from './taskaTypes';
 import {ResponsiblesType} from './responsiblesTypes';
-import {tasksSchema} from './tasksSchema';
+
 import {fetchTasks} from './methods/fetchTasks';
 import {fetchResponsibles} from './methods/fetchResponsibles';
 import {fetchColumns} from './methods/fetchColumns';
+import {INITIAL_CONTEXT} from './taskPoviderConst';
+import {saveColumnsMethod} from './methods/saveColumns';
 
-const TASK_IDS: string[] = [];
-
-const INIT_COLUMNS = {
-  toDo: {
-    id: 'toDo',
-    title: 'To Do',
-    taskIds: TASK_IDS,
-  },
-  inProgress: {
-    id: 'inProgress',
-    title: 'In Progress',
-    taskIds: TASK_IDS,
-  },
-  done: {
-    id: 'done',
-    title: 'Done',
-    taskIds: TASK_IDS,
-  },
-} as const;
-
-const INITIAL_CONTEXT: TasksContextType = {
-  tasks: [],
-  responsibles: [],
-  columns: INIT_COLUMNS,
-  setTasks: () => {},
-  setResponsibles: () => {},
-  setColumns: () => {},
-  updateTask: () => {},
-  updateStatusTask: () => {},
-  saveTasksPositions: () => {},
-};
-
-// Створюємо контекст
 const TasksContext = createContext<TasksContextType>(INITIAL_CONTEXT);
 
-// Провайдер контексту
 export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
+  /// properties ///
   const [tasks, setTasks] = useState<TasksType>(INITIAL_CONTEXT.tasks);
 
   const [responsibles, setResponsibles] = useState<ResponsiblesType>(
@@ -58,30 +31,16 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   );
   const [columns, setColumns] = useState(INITIAL_CONTEXT.columns);
 
-  const saveTasksPositions = async (columns) => {
-    try {
-      const online = navigator.onLine;
-      setColumns(columns);
-      localStorage.setItem('columns', JSON.stringify(columns));
-      if (online) {
-        const response = await fetch('http://localhost:3000/columns', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(columns),
-        });
-        if (!response.ok) {
-          throw new Error('Error save tasks');
-        }
-        await fetchTasks(setTasks);
-      }
-    } catch (error) {
-      console.error('Error save tasks:', error);
-    }
+  /// methods ///
+  const saveColumns = async (columns: ColumnsType) => {
+    saveColumnsMethod(columns, setColumns, setTasks);
   };
-  const saveNewTaskIdToColumn = async (columnId, taskId) => {
-    const currentColumn = columns[columnId]?.taskIds;
+
+  const saveNewTaskIdToColumn = async (
+    columnId: StatusColumnType,
+    taskId: string
+  ) => {
+    const currentColumn = columns[columnId]?.taskIds || [];
     const uniqueTaskIds = [...new Set([...currentColumn, taskId])];
     const changedColumns = {
       ...columns,
@@ -91,7 +50,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       },
     };
 
-    await saveTasksPositions(changedColumns);
+    await saveColumns(changedColumns);
   };
 
   const createTask = async (task) => {
@@ -210,7 +169,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
             taskIds: newColumn,
           },
         };
-        await saveTasksPositions(changedColumns);
+        await saveColumns(changedColumns);
       }
     } catch (error) {
       console.error('Error delete tasks:', error);
@@ -275,7 +234,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
         responsibles,
         columns,
         createTask,
-        saveTasksPositions,
+        saveColumns,
         updateTask,
         deleteTask,
         updateStatusTask,

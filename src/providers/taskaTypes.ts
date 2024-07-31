@@ -28,5 +28,5 @@ export type TasksContextType = {
   setResponsibles: (responsibles: ResponsiblesType) => void;
   setColumns: (columns: ColumnsType) => void;
   updateStatusTask: (taskId: string, status: StatusColumnType) => void;
-  saveTasksPositions: (columns: ColumnsType) => void;
+  saveColumns: (columns: ColumnsType) => void;
 };
