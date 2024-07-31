@@ -14,9 +14,8 @@ export async function api<T>(
 ): Promise<T> {
   const url = `${API_PATH}/${path}`;
 
-  console.log('%c ******* url', 'color:yellow', url);
-
   const headerMethod = method || 'GET';
+  console.log('%c ******* api', 'color:yellow', url, headerMethod);
 
   const options: ApiOptions = {
     method: headerMethod,

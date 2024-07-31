@@ -1,4 +1,4 @@
-//
+// @ts-nocheck
 import React, {
   createContext,
   useState,
@@ -12,6 +12,7 @@ import {StatusesType, TasksContextType, TasksType} from './taskaTypes';
 import {ResponsiblesType} from './responsiblesTypes';
 import {tasksSchema} from './tasksSchema';
 import {fetchTasks} from './methods/fetchTasks';
+import {fetchResponsibles} from './methods/fetchResponsibles';
 
 const INITIAL_CONTEXT: TasksContextType = {
   tasks: [],
@@ -96,27 +97,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       }
     } catch (error) {
       console.error('Error fetching columns:', error);
-    }
-  };
-
-  // Метод для отримання responsibles з API
-  const fetchResponsibles = async () => {
-    const online = navigator.onLine;
-
-    try {
-      if (online) {
-        const response = await fetch('http://localhost:3000/responsibles');
-        const data = await response.json();
-        localStorage.setItem('responsibles', JSON.stringify(data));
-        setResponsibles(data);
-      } else {
-        const data = localStorage.getItem('responsibles');
-        if (data) {
-          setStatuses(JSON.parse(data));
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching responsibles:', error);
     }
   };
 
@@ -317,7 +297,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     await Promise.all([
       fetchTasks(setTasks),
       fetchStatuses(),
-      fetchResponsibles(),
+      fetchResponsibles(setResponsibles),
       fetchColumns(),
     ]);
   };

@@ -1,4 +1,5 @@
 import {api} from '../../api/api';
+import {logger} from '../../api/logger';
 import {TasksContextType} from '../taskaTypes';
 import {tasksSchema} from '../tasksSchema';
 
@@ -23,6 +24,6 @@ export const fetchTasks = async (setTasks: TasksContextType['setTasks']) => {
       }
     }
   } catch (error) {
-    console.error('Error fetching tasks:', error);
+    logger(error);
   }
 };
