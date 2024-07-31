@@ -16,8 +16,8 @@
 }
 
 .userAvatarImg {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   object-fit: cover;
   object-position: top;
   border-radius: 50%;
@@ -49,6 +49,10 @@
 .cardTitle {
   margin: 0;
   margin-bottom: 8px;
+
+  & small {
+    font-size: 10px;
+  }
 }
 
 .userName {

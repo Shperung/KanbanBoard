@@ -158,15 +158,14 @@ export const TasksProvider = ({children}) => {
           body: JSON.stringify(columns),
         });
         if (!response.ok) {
-          throw new Error('Error save tasks tositions');
+          throw new Error('Error save tasks');
         }
         await fetchTasks();
       }
     } catch (error) {
-      console.error('Error save tasks tositions:', error);
+      console.error('Error save tasks:', error);
     }
   };
-
   const saveNewTaskIdToColumn = async (columnId, taskId) => {
     const currentColumn = columns[columnId]?.taskIds;
     const uniqueTaskIds = [...new Set([...currentColumn, taskId])];
@@ -213,6 +212,40 @@ export const TasksProvider = ({children}) => {
     }
   };
 
+  const updateTask = async (task) => {
+    try {
+      const online = navigator.onLine;
+
+      if (online) {
+        const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(task),
+        });
+        if (!response.ok) {
+          throw new Error('Error update tasks');
+        }
+      } else {
+        const data = localStorage.getItem('tasks');
+        if (data) {
+          const tasks = JSON.parse(data);
+          const updatedTasks = tasks.map((item) => {
+            if (item.id === task.id) {
+              return task;
+            }
+            return item;
+          });
+          localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        }
+      }
+      await fetchTasks();
+    } catch (error) {
+      console.error('Error update tasks:', error);
+    }
+  };
+
   const handleGetData = async () => {
     console.log('%c ||||| 111', 'color:yellowgreen', 111);
     await Promise.all([
@@ -243,6 +276,7 @@ export const TasksProvider = ({children}) => {
         normalizedTasks,
         normalizedTasksList,
         saveTasksPositions,
+        updateTask,
       }}
     >
       {children}

@@ -30,29 +30,29 @@
     },
     {
       "id": "bbc1",
-      "title": "fwdfdsf",
-      "description": "dsfdsfdsf",
+      "title": "555555",
+      "description": "5555555",
       "responsible": "3",
       "status": "toDo"
     },
     {
       "id": "5361",
-      "title": "fdfsd",
-      "description": "fdsfdsf",
-      "responsible": "3",
+      "title": "33333",
+      "description": "333333",
+      "responsible": "1",
       "status": "toDo"
     },
     {
       "id": "de5c",
-      "title": "fdsf",
-      "description": "dfdsf",
-      "responsible": "3",
+      "title": "22222222",
+      "description": "22222222",
+      "responsible": "2",
       "status": "toDo"
     },
     {
       "id": "21f6",
-      "title": "fdsfd",
-      "description": "fsdfds",
+      "title": "777777777",
+      "description": "111111",
       "responsible": "1",
       "status": "toDo"
     }
@@ -93,17 +93,15 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "2",
-        "3"
+        "bbc1"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
+        "2",
         "21f6",
-        "de5c",
-        "5361",
         "4",
         "efac"
       ]
@@ -112,7 +110,9 @@
       "id": "done",
       "title": "Done",
       "taskIds": [
-        "bbc1",
+        "de5c",
+        "3",
+        "5361",
         "1"
       ]
     }

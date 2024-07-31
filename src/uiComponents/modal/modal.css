@@ -30,3 +30,14 @@
   right: 10px;
   top: 10px;
 }
+
+.formLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.submitBtn {
+  margin-top: 8px;
+}
