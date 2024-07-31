@@ -30,10 +30,10 @@
     },
     {
       "id": "a345",
-      "title": "111",
-      "description": "111",
+      "title": "Butcher 2",
       "responsible": "1",
-      "status": "toDo"
+      "description": "2222222",
+      "status": "inProgress"
     },
     {
       "id": "cf32",
@@ -66,15 +66,15 @@
       "title": "To Do",
       "taskIds": [
         "2",
-        "1",
-        "a345"
+        "1"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
-        "3"
+        "3",
+        "a345"
       ]
     },
     "done": {

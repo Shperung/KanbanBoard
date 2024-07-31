@@ -22,6 +22,7 @@ import {fetchColumns} from './methods/fetchColumns';
 import {INITIAL_CONTEXT} from './taskPoviderConst';
 import {saveColumnsMethod} from './methods/saveColumns';
 import {createTaskMethod} from './methods/createTaskMethod';
+import {updateTaskMethod} from './methods/updateTaskMethod';
 
 const TasksContext = createContext<TasksContextType>(INITIAL_CONTEXT);
 
@@ -65,38 +66,8 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     );
   };
 
-  const updateTask = async (task) => {
-    try {
-      const online = navigator.onLine;
-
-      if (online) {
-        const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(task),
-        });
-        if (!response.ok) {
-          throw new Error('Error update tasks');
-        }
-      } else {
-        const data = localStorage.getItem('tasks');
-        if (data) {
-          const tasks = JSON.parse(data);
-          const updatedTasks = tasks.map((item) => {
-            if (item.id === task.id) {
-              return task;
-            }
-            return item;
-          });
-          localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-        }
-      }
-      await fetchTasks(setTasks);
-    } catch (error) {
-      console.error('Error update tasks:', error);
-    }
+  const updateTask = async (task: TaskType) => {
+    await updateTaskMethod(task, setTasks);
   };
 
   const deleteTask = async (taskId: string, columnId: string) => {

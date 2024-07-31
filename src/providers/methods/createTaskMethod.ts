@@ -21,8 +21,6 @@ export const createTaskMethod = async (
       await fetchTasks(setTasks);
       await saveNewTaskIdToColumn(validatedTask.status, validatedTask.id);
     } else {
-      // zod validation
-      const validatedPropsTask = taskWithoutIdSchema.parse(taskWithoutId);
       const offlineTasks = {...validatedPropsTask, id: `${Date.now()}`};
       localStorage.setItem('tasks', JSON.stringify([...tasks, offlineTasks]));
       await fetchTasks(setTasks);
