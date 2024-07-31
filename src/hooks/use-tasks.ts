@@ -77,21 +77,21 @@ export function useTasks() {
   //   });
   // }, [toDoTaskIds, inProgressTaskIds, doneTaskIds]);
 
-  const handleUpdateTask = async (
-    taskId: string,
-    status: StatusColumnType,
-    position: number
-  ) => {
-    const currentTask = normalizedTasks[taskId];
-    if (currentTask) {
-      const updatedCurrentTask = {
-        ...currentTask,
-        status,
-        position,
-      };
-      await updateTask(updatedCurrentTask);
-    }
-  };
+  // const handleUpdateTask = async (
+  //   taskId: string,
+  //   status: StatusColumnType,
+  //   position: number
+  // ) => {
+  //   const currentTask = normalizedTasks[taskId];
+  //   if (currentTask) {
+  //     const updatedCurrentTask = {
+  //       ...currentTask,
+  //       status,
+  //       position,
+  //     };
+  //     await updateTask(updatedCurrentTask);
+  //   }
+  // };
 
   const onDragEnd = async (result) => {
     const {destination, source, draggableId} = result;
@@ -140,13 +140,13 @@ export function useTasks() {
       // };
 
       await saveTasksPositions(newColumnsData);
-      await handleUpdateTask(
-        draggableId,
-        destination.droppableId,
-        destination.index
-      );
+      // await handleUpdateTask(
+      //   draggableId,
+      //   destination.droppableId,
+      //   destination.index
+      // );
 
-      // await updateStatusTask(draggableId, destination.droppableId);
+      await updateStatusTask(draggableId, destination.droppableId);
       //setColumnsBoard(newColumnsData);
 
       return;
@@ -173,13 +173,13 @@ export function useTasks() {
       [newFinish.id]: newFinish,
     };
     await saveTasksPositions(newColumnsData);
-    await handleUpdateTask(
-      draggableId,
-      destination.droppableId,
-      destination.index
-    );
+    // await handleUpdateTask(
+    //   draggableId,
+    //   destination.droppableId,
+    //   destination.index
+    // );
 
-    //await updateStatusTask(draggableId, destination.droppableId);
+    await updateStatusTask(draggableId, destination.droppableId);
 
     // const newColumnsData = {
     //   ...columnsBoard,

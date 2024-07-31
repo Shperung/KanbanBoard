@@ -5,7 +5,7 @@
       "title": "Sample Task 1111111",
       "responsible": "1",
       "description": "This is a sample task. 1",
-      "position": 3,
+      "position": 2,
       "status": "toDo"
     },
     {
@@ -13,15 +13,15 @@
       "title": "Sample Task 2",
       "responsible": "2",
       "description": "This is a sample task. 2",
-      "position": 0,
-      "status": "toDo"
+      "position": 1,
+      "status": "inProgress"
     },
     {
       "id": "3",
       "title": "Sample Task 3",
       "responsible": "3",
       "description": "This is a sample task. 3",
-      "position": 2,
+      "position": 0,
       "status": "toDo"
     },
     {
@@ -30,7 +30,7 @@
       "responsible": "2",
       "description": "This is a sample task. 4",
       "position": 1,
-      "status": "toDo"
+      "status": "inProgress"
     }
   ],
   "statuses": [
@@ -69,8 +69,6 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "2",
-        "4",
         "3",
         "1"
       ]
@@ -78,7 +76,10 @@
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
-      "taskIds": []
+      "taskIds": [
+        "2",
+        "4"
+      ]
     },
     "done": {
       "id": "done",
