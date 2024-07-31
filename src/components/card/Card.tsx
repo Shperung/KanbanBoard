@@ -38,7 +38,10 @@ export default function Card({task, index}) {
             <div className='cardContent'>
               <div>
                 <h3 className='cardTitle'>
-                  {task.title} <small>({task.id})</small>
+                  {task.title}{' '}
+                  <small>
+                    ({task.id}, {task.status})
+                  </small>
                 </h3>
                 <p className='cardDescription'>{task.description}</p>
               </div>

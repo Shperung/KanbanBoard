@@ -7,6 +7,7 @@ export const taskShema = z.object({
   title: z.string(),
   responsible: z.string(),
   description: z.string(),
+  position: z.number(),
   status: statusColumnSchema,
 });
 

@@ -21,6 +21,9 @@ const INITIAL_CONTEXT: TasksContextType = {
   setTasks: () => {},
   setResponsibles: () => {},
   setColumns: () => {},
+  updateTask: () => {},
+  updateStatusTask: () => {},
+  saveTasksPositions: () => {},
 };
 
 // Створюємо контекст
@@ -306,6 +309,40 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   };
 
+  const updateStatusTask = async (taskId: string, status: StatusColumnType) => {
+    try {
+      const online = navigator.onLine;
+
+      if (online) {
+        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({status}),
+        });
+        if (!response.ok) {
+          throw new Error('Error update Status Task ');
+        }
+      } else {
+        const data = localStorage.getItem('tasks');
+        if (data) {
+          const tasks = JSON.parse(data);
+          const updatedTasks = tasks.map((item) => {
+            if (item.id === task.id) {
+              return {...item, status};
+            }
+            return item;
+          });
+          localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+        }
+      }
+      await fetchTasks();
+    } catch (error) {
+      console.error('Error update Status Task', error);
+    }
+  };
+
   const handleGetData = async () => {
     await Promise.all([
       fetchTasks(),
@@ -335,6 +372,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
         saveTasksPositions,
         updateTask,
         deleteTask,
+        updateStatusTask,
       }}
     >
       {children}
