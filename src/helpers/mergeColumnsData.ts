@@ -1,10 +1,6 @@
 import {ColumnsType} from '../providers/taskaTypes';
 import {INIT_COLUMNS} from '../providers/taskPoviderConst';
 
-export function sum(a, b) {
-  return a + b;
-}
-
 export const mergeColumnData = (
   localData: ColumnsType,
   serverData: ColumnsType

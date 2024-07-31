@@ -1,5 +1,6 @@
 import {api} from '../../api/api';
 import {logger} from '../../api/logger';
+import {mergeColumnData} from '../../helpers/mergeColumnsData';
 import {ColumnsType, TasksContextType} from '../taskaTypes';
 import {columnsSchema} from '../tasksSchema';
 
@@ -14,29 +15,53 @@ export const fetchColumns = async (
       // zod validation
       const columnsData = columnsSchema.parse(dataApi);
 
-      localStorage.setItem('columns', JSON.stringify(columnsData));
-      setColumns(columnsData);
+      const serverColumnToString = JSON.stringify(columnsData);
 
-      // const localSorageColumns = localStorage.getItem('columns');
+      const localSorageColumns = localStorage.getItem('columns');
 
-      // const localSorageColumnsData = JSON.parse(localSorageColumns);
-      // const serverColumnToString = JSON.stringify(data);
+      console.log(
+        '%c ||||| localSorageColumns',
+        'color:yellowgreen',
+        localSorageColumns
+      );
 
-      // const isEqualStingifyColumns =
-      //   localSorageColumns === serverColumnToString;
+      console.log(
+        '%c ||||| serverColumnToString',
+        'color:yellowgreen',
+        serverColumnToString
+      );
+      const isEqualStingifyColumns =
+        localSorageColumns === serverColumnToString;
 
-      // if (!isEqualStingifyColumns) {
-      //   const mergedColumns = mergeColumnsData(localSorageColumnsData, data);
+      console.log(
+        '%c ||||| isEqualStingifyColumns',
+        'color:yellowgreen',
+        isEqualStingifyColumns
+      );
 
-      //   if (mergedColumns) {
-      //     await saveColumns(mergedColumns);
-      //     localStorage.setItem('columns', JSON.stringify(mergedColumns));
-      //     setColumns(mergedColumns);
-      //   }
-      // } else {
-      //   localStorage.setItem('columns', JSON.stringify(data));
-      //   setColumns(data);
-      // }
+      const localSorageColumnsData = JSON.parse(localSorageColumns);
+
+      if (!isEqualStingifyColumns) {
+        const mergedColumns = mergeColumnData(
+          localSorageColumnsData,
+          columnsData
+        );
+
+        console.log(
+          '%c ||||| mergedColumns',
+          'color:yellowgreen',
+          mergedColumns
+        );
+
+        if (mergedColumns) {
+          await setColumns(mergedColumns);
+          localStorage.setItem('columns', JSON.stringify(mergedColumns));
+          setColumns(mergedColumns);
+        }
+      } else {
+        localStorage.setItem('columns', serverColumnToString);
+        setColumns(columnsData);
+      }
     } else {
       const dataStorage = localStorage.getItem('columns');
       if (dataStorage) {
