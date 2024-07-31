@@ -34,33 +34,11 @@ const TasksContext = createContext<TasksContextType>(INITIAL_CONTEXT);
 export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [tasks, setTasks] = useState<TasksType>(INITIAL_CONTEXT.tasks);
 
-  const [statuses, setStatuses] = useState<StatusesType>(
-    INITIAL_CONTEXT.statuses
-  );
   const [responsibles, setResponsibles] = useState<ResponsiblesType>(
     INITIAL_CONTEXT.responsibles
   );
   const [columns, setColumns] = useState(null);
 
-  // Метод для отримання statuses з API
-  const fetchStatuses = async () => {
-    const online = navigator.onLine;
-    try {
-      if (online) {
-        const response = await fetch('http://localhost:3000/statuses');
-        const data = await response.json();
-        localStorage.setItem('statuses', JSON.stringify(data));
-        setStatuses(data);
-      } else {
-        const data = localStorage.getItem('statuses');
-        if (data) {
-          setStatuses(JSON.parse(data));
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching statuses:', error);
-    }
-  };
   // Метод для отримання statuses з API
   const fetchColumns = async () => {
     const online = navigator.onLine;
@@ -296,7 +274,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const handleGetData = async () => {
     await Promise.all([
       fetchTasks(setTasks),
-      fetchStatuses(),
       fetchResponsibles(setResponsibles),
       fetchColumns(),
     ]);
@@ -315,7 +292,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     <TasksContext.Provider
       value={{
         tasks,
-        statuses,
         responsibles,
         columns,
         createTask,
