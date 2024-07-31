@@ -1,8 +1,9 @@
-// @ts-nocheck
 import React, {useState} from 'react';
-import {Draggable} from 'react-beautiful-dnd';
-
-import UserPhoto from '../assets/avatar.jpeg';
+import {
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot,
+} from 'react-beautiful-dnd';
 import {useTasksContext} from '../../providers/TasksProvider';
 import IconPensil from '../../assets/pensil.svg';
 import IconDelete from '../../assets/delete.svg';
@@ -10,9 +11,15 @@ import IconDelete from '../../assets/delete.svg';
 import './card.css';
 import {ModalManageTask} from '../manageTask/ModalManageTask';
 import {ModalDeleteTask} from '../manageTask/ModalDeleteTask';
+import {TaskType} from '../../providers/taskaTypes';
 
-export default function Card({task, index}) {
-  const {tasks, statuses, responsibles, createTask} = useTasksContext();
+type Props = {
+  task: TaskType;
+  index: number;
+};
+
+export default function Card({task, index}: Props) {
+  const {responsibles} = useTasksContext();
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
 
@@ -22,7 +29,7 @@ export default function Card({task, index}) {
   return (
     <>
       <Draggable draggableId={task?.id} index={index}>
-        {(provided, snapshot) => (
+        {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
           <article
             className='card'
             ref={provided.innerRef}
@@ -69,7 +76,6 @@ export default function Card({task, index}) {
                   alt={user?.name}
                 />
               </figure>
-              {provided.placeholder}
             </footer>
           </article>
         )}

@@ -1,13 +1,16 @@
-// @ts-nocheck
-import React from 'react';
-import styled from 'styled-components';
 import Card from '../card/Card';
 import './column.css';
 
-import {Droppable} from 'react-beautiful-dnd';
+import {Droppable, DroppableProvided} from 'react-beautiful-dnd';
 import {AddTask} from '../addTask/AddTask';
+import {ColumnType, TasksType} from '../../providers/taskaTypes';
 
-export function Column({column, tasks, index}) {
+type Props = {
+  column: ColumnType;
+  tasks: TasksType;
+};
+
+export function Column({column, tasks}: Props) {
   const isTodo = column.id === 'toDo';
 
   return (
@@ -16,7 +19,7 @@ export function Column({column, tasks, index}) {
         <span>{column.title}</span> {isTodo ? <AddTask /> : null}
       </h3>
       <Droppable droppableId={column.id} type='TASK'>
-        {(provided) => (
+        {(provided: DroppableProvided) => (
           <section
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -29,7 +32,6 @@ export function Column({column, tasks, index}) {
                   ))
                 : null}
             </div>
-            {provided.placeholder}
           </section>
         )}
       </Droppable>

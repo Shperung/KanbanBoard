@@ -12,7 +12,7 @@
       "title": "Starlight",
       "responsible": "2",
       "description": "descr",
-      "status": "toDo"
+      "status": "inProgress"
     },
     {
       "id": "3",
@@ -26,14 +26,14 @@
       "title": "55555",
       "responsible": "3",
       "description": "555555",
-      "status": "inProgress"
+      "status": "toDo"
     },
     {
       "id": "a345",
       "title": "Butcher 2",
       "responsible": "1",
       "description": "2222222",
-      "status": "inProgress"
+      "status": "done"
     },
     {
       "id": "cf32",
@@ -65,24 +65,24 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "2",
-        "cf32"
+        "cf32",
+        "4"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
-        "3",
-        "a345",
-        "4"
+        "2",
+        "3"
       ]
     },
     "done": {
       "id": "done",
       "title": "Done",
       "taskIds": [
-        "1"
+        "1",
+        "a345"
       ]
     }
   }

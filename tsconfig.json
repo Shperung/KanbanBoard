@@ -15,10 +15,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": [
-      "vite-plugin-pwa/client"
-    ]
+    "types": ["vite-plugin-pwa/client", "@types/react-beautiful-dnd"]
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{"path": "./tsconfig.node.json"}]
 }

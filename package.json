@@ -15,7 +15,6 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
-    "styled-components": "^6.1.12",
     "zod": "^3.23.8"
   },
   "devDependencies": {

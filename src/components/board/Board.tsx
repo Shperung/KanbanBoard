@@ -1,24 +1,27 @@
-// @ts-nocheck
-
 import React, {useState, useEffect} from 'react';
-import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  DroppableProvided,
+} from 'react-beautiful-dnd';
 import {useTasksContext} from '../../providers/TasksProvider';
 import './board.css';
 import {useTasks} from '../../hooks/use-tasks';
 import {Column} from '../column/Column';
 import {Header} from '../header/Header';
+import {StatusColumnType} from '../../providers/taskaTypes';
 
 const Board = () => {
-  const {columns, setColumns, onDragEnd, normalizedTasks} = useTasks();
+  const {columns, onDragEnd, normalizedTasks} = useTasks();
   if (!columns) return null;
 
-  const columnsKeys = Object.keys(columns);
+  const columnsKeys = Object.keys(columns) as StatusColumnType[];
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Header />
       <Droppable droppableId='all-columns' direction='horizontal'>
-        {(provided) => (
+        {(provided: DroppableProvided) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -26,20 +29,18 @@ const Board = () => {
           >
             {columnsKeys.map((columnId, index) => {
               const column = columns[columnId];
-              const tasks = column.taskIds
-                .map((taskId) => normalizedTasks?.[taskId])
-                .filter(Boolean);
+              const tasks = column
+                ? column.taskIds
+                    .map((taskId) => normalizedTasks?.[taskId])
+                    .filter(Boolean)
+                : [];
 
-              return (
-                <Column
-                  key={column.id}
-                  column={column}
-                  tasks={tasks}
-                  index={index}
-                />
-              );
+              if (column?.id) {
+                return <Column key={column.id} column={column} tasks={tasks} />;
+              }
+
+              return null;
             })}
-            {provided.placeholder}
           </div>
         )}
       </Droppable>

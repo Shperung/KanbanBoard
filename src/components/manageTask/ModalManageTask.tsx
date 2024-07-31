@@ -1,22 +1,29 @@
-// @ts-nocheck
-
 import React, {useState, ChangeEvent, useEffect} from 'react';
 import Modal from '../../uiComponents/modal/Modal';
 import './modalManageTask.css';
 
 import {useTasksContext} from '../../providers/TasksProvider';
+import {TaskType, TaskWithoutIdType} from '../../providers/taskaTypes';
 
 const INIT_TASK_DATA = {
   title: '',
   description: '',
   responsible: '',
   status: 'toDo',
+} as const;
+
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  task?: TaskType;
 };
 
-export function ModalManageTask({isOpen, onClose, task}) {
+export function ModalManageTask({isOpen, onClose, task}: Props) {
   const {responsibles, createTask, updateTask} = useTasksContext();
   const isEditTask = task;
-  const [taskData, setTaskData] = useState(INIT_TASK_DATA);
+  const [taskData, setTaskData] = useState<TaskWithoutIdType | TaskType>(
+    INIT_TASK_DATA
+  );
 
   useEffect(() => {
     if (isEditTask) {
@@ -40,7 +47,8 @@ export function ModalManageTask({isOpen, onClose, task}) {
   const handleManageTask = async () => {
     try {
       if (isEditTask) {
-        await updateTask(taskData);
+        const dataForUpdate = taskData as TaskType;
+        await updateTask(dataForUpdate);
       } else {
         await createTask(taskData);
       }
