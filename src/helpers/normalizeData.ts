@@ -1,11 +1,13 @@
 interface Entity {
-  id: number;
+  id: string;
 }
 
 export const normalizeData = <T extends Entity>(data: Array<T>) => {
-  const stub: [Record<number, T>, Entity['id'][]] = [{}, []];
+  const stub: [Record<string, T>, Entity['id'][]] = [{}, []];
   if (!Array.isArray(data)) {
-    throw new Error('Incorrect data received from server. Check normalization function call');
+    throw new Error(
+      'Incorrect data received from server. Check normalization function call'
+    );
   }
   const newRes = data.reduce((acc, element) => {
     acc[0][element.id] = element;

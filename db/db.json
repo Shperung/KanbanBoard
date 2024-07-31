@@ -2,10 +2,10 @@
   "tasks": [
     {
       "id": "1",
-      "title": "Sample Task 1",
+      "title": "Sample Task 1111111",
+      "responsible": "1",
       "description": "This is a sample task. 1",
-      "status": "toDo",
-      "responsible": "1"
+      "status": "toDo"
     },
     {
       "id": "2",
@@ -65,17 +65,16 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "4"
+        "3",
+        "1"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
-        "2",
-        "3",
+        "4",
         "5361",
-        "1",
         "efac"
       ]
     },
@@ -83,6 +82,7 @@
       "id": "done",
       "title": "Done",
       "taskIds": [
+        "2",
         "de5c"
       ]
     }

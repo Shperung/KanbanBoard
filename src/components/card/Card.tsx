@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {useState} from 'react';
 import {Draggable} from 'react-beautiful-dnd';
 
@@ -8,7 +9,7 @@ import IconDelete from '../../assets/delete.svg';
 
 import './card.css';
 import {ModalManageTask} from '../manageTask/ModalManageTask';
-import {ModalDeleteTask} from '../manageTask/ModalDeletetask';
+import {ModalDeleteTask} from '../manageTask/ModalDeleteTask';
 
 export default function Card({task, index}) {
   const {tasks, statuses, responsibles, createTask} = useTasksContext();
@@ -33,7 +34,6 @@ export default function Card({task, index}) {
                 ? 'var(--color-active-card'
                 : 'var(--color-background)',
             }}
-            isDragging={snapshot.isDragging}
           >
             <div className='cardContent'>
               <div>

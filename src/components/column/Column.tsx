@@ -10,6 +10,8 @@ import {AddTask} from '../addTask/AddTask';
 export function Column({column, tasks, index}) {
   const isTodo = column.id === 'toDo';
 
+  console.log('%c ||||| tasks', 'color:yellowgreen', tasks);
+
   return (
     <section>
       <h3 className='columnHeader'>
@@ -23,9 +25,11 @@ export function Column({column, tasks, index}) {
             className='column'
           >
             <div className='cards'>
-              {tasks.map((task, index) => (
-                <Card key={task?.id} task={task} index={index} />
-              ))}
+              {tasks?.length
+                ? tasks.map((task, index) => (
+                    <Card key={task?.id} task={task} index={index} />
+                  ))
+                : null}
             </div>
             {provided.placeholder}
           </section>

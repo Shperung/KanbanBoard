@@ -1,19 +1,41 @@
 // @ts-nocheck
-import React, {createContext, useState, useEffect, useContext} from 'react';
 
-import {normalizeData} from '../helpers/normalizeData';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  ReactNode,
+} from 'react';
+
 import {mergeColumnsData} from '../helpers/mergeColumnsData';
+import {StatusesType, TasksContextType, TasksType} from './taskaTypes';
+import {ResponsiblesType} from './responsiblesTypes';
+import {tasksSchema} from './tasksSchema';
+
+const INITIAL_CONTEXT: TasksContextType = {
+  tasks: [],
+  statuses: [],
+  responsibles: [],
+  columns: null,
+  setTasks: () => {},
+  setResponsibles: () => {},
+  setColumns: () => {},
+};
 
 // Створюємо контекст
-const TasksContext = createContext();
+const TasksContext = createContext<TasksContextType>(INITIAL_CONTEXT);
 
 // Провайдер контексту
-export const TasksProvider = ({children}) => {
-  const [tasks, setTasks] = useState([]);
-  const [normalizedTasks, setDormalizedTasks] = useState({});
-  const [normalizedTasksList, setDormalizedTasksList] = useState([]);
-  const [statuses, setStatuses] = useState([]);
-  const [responsibles, setResponsibles] = useState([]);
+export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
+  const [tasks, setTasks] = useState<TasksType>(INITIAL_CONTEXT.tasks);
+
+  const [statuses, setStatuses] = useState<StatusesType>(
+    INITIAL_CONTEXT.statuses
+  );
+  const [responsibles, setResponsibles] = useState<ResponsiblesType>(
+    INITIAL_CONTEXT.responsibles
+  );
   const [columns, setColumns] = useState(null);
 
   // Метод для отримання tasks з API
@@ -26,21 +48,16 @@ export const TasksProvider = ({children}) => {
       if (online) {
         const response = await fetch('http://localhost:3000/tasks');
         const data = await response.json();
-        localStorage.setItem('tasks', JSON.stringify(data));
-        setTasks(data);
-        const [normalizedTasks, normalizedTasksList] = normalizeData(data);
-
-        setDormalizedTasks(normalizedTasks);
-        setDormalizedTasksList(normalizedTasksList);
+        // zod validation
+        const tasksData = tasksSchema.parse(data);
+        localStorage.setItem('tasks', JSON.stringify(tasksData));
+        setTasks(tasksData);
       } else {
         const data = localStorage.getItem('tasks');
-        if (data) {
-          setTasks(JSON.parse(data));
-          const [normalizedTasks, normalizedTasksList] = normalizeData(
-            JSON.parse(data)
-          );
-          setDormalizedTasks(normalizedTasks);
-          setDormalizedTasksList(normalizedTasksList);
+        // zod validation
+        const tasksData = tasksSchema.parse(JSON.parse(data));
+        if (tasksData) {
+          setTasks(tasksData);
         }
       }
     } catch (error) {
@@ -78,30 +95,16 @@ export const TasksProvider = ({children}) => {
         const data = await response.json();
 
         const localSorageColumns = localStorage.getItem('columns');
-        console.log(
-          '%c ||||| localSorageColumns',
-          'color:yellowgreen',
-          localSorageColumns
-        );
-        console.log('%c ||||| data', 'color:yellowgreen', data);
+
         const localSorageColumnsData = JSON.parse(localSorageColumns);
         const serverColumnToString = JSON.stringify(data);
 
         const isEqualStingifyColumns =
           localSorageColumns === serverColumnToString;
-        console.log(
-          '%c ||||| isEqualStingifyColumns',
-          'color:yellowgreen',
-          isEqualStingifyColumns
-        );
 
         if (!isEqualStingifyColumns) {
           const mergedColumns = mergeColumnsData(localSorageColumnsData, data);
-          console.log(
-            '%c ||||| mergedColumns',
-            'color:yellowgreen',
-            mergedColumns
-          );
+
           if (mergedColumns) {
             await saveTasksPositions(mergedColumns);
             localStorage.setItem('columns', JSON.stringify(mergedColumns));
@@ -329,8 +332,6 @@ export const TasksProvider = ({children}) => {
         responsibles,
         columns,
         createTask,
-        normalizedTasks,
-        normalizedTasksList,
         saveTasksPositions,
         updateTask,
         deleteTask,

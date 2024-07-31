@@ -23,3 +23,9 @@
 .offlineStatus {
   color: var(--color-error);
 }
+
+.boardDroppableWarper {
+  display: flex;
+  overflow-x: auto;
+  padding: 8px;
+}

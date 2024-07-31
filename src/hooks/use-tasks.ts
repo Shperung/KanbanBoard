@@ -1,7 +1,9 @@
 // @ts-nocheck
+
 import {useEffect, useState} from 'react';
 import {useTasksContext} from '../providers/TasksProvider';
 import {mergeColumnsData} from '../helpers/mergeColumnsData';
+import {normalizeData} from '../helpers/normalizeData';
 
 const INIT_COLUMNS = {
   toDo: {
@@ -22,8 +24,9 @@ const INIT_COLUMNS = {
 };
 
 export function useTasks() {
-  const {normalizedTasksList, normalizedTasks, columns, saveTasksPositions} =
-    useTasksContext();
+  const {tasks, columns, saveTasksPositions} = useTasksContext();
+
+  const [normalizedTasks, normalizedTasksList] = normalizeData(tasks);
 
   const [_, setColumns] = useState(INIT_COLUMNS);
 
@@ -87,5 +90,5 @@ export function useTasks() {
     await saveTasksPositions(newColumnsData);
   };
 
-  return {columns, setColumns, onDragEnd};
+  return {columns, setColumns, onDragEnd, normalizedTasks};
 }
