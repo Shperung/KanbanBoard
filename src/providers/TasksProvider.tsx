@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+//
 import React, {
   createContext,
   useState,
@@ -12,6 +11,7 @@ import {mergeColumnsData} from '../helpers/mergeColumnsData';
 import {StatusesType, TasksContextType, TasksType} from './taskaTypes';
 import {ResponsiblesType} from './responsiblesTypes';
 import {tasksSchema} from './tasksSchema';
+import {fetchTasks} from './methods/fetchTasks';
 
 const INITIAL_CONTEXT: TasksContextType = {
   tasks: [],
@@ -40,32 +40,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     INITIAL_CONTEXT.responsibles
   );
   const [columns, setColumns] = useState(null);
-
-  // Метод для отримання tasks з API
-  const fetchTasks = async () => {
-    // Перевірка наявності інтернет-з'єднання
-    const online = navigator.onLine;
-
-    try {
-      if (online) {
-        const response = await fetch('http://localhost:3000/tasks');
-        const data = await response.json();
-        // zod validation
-        const tasksData = tasksSchema.parse(data);
-        localStorage.setItem('tasks', JSON.stringify(tasksData));
-        setTasks(tasksData);
-      } else {
-        const data = localStorage.getItem('tasks');
-        // zod validation
-        const tasksData = tasksSchema.parse(JSON.parse(data));
-        if (tasksData) {
-          setTasks(tasksData);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
-  };
 
   // Метод для отримання statuses з API
   const fetchStatuses = async () => {
@@ -162,7 +136,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
         if (!response.ok) {
           throw new Error('Error save tasks');
         }
-        await fetchTasks();
+        await fetchTasks(setTasks);
       }
     } catch (error) {
       console.error('Error save tasks:', error);
@@ -200,13 +174,13 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
         const data = await response.json();
         console.log('%c ||||| data', 'color:yellowgreen', data);
-        await fetchTasks();
+        await fetchTasks(setTasks);
         await saveNewTaskIdToColumn(data.status, data.id);
       } else {
         const offlineTasks = {...task, id: `${Date.now()}`};
         console.log('%c ||||| offlineTasks', 'color:yellowgreen', offlineTasks);
         localStorage.setItem('tasks', JSON.stringify([...tasks, offlineTasks]));
-        await fetchTasks();
+        await fetchTasks(setTasks);
         await saveNewTaskIdToColumn(offlineTasks.status, offlineTasks.id);
       }
     } catch (error) {
@@ -242,7 +216,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
           localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         }
       }
-      await fetchTasks();
+      await fetchTasks(setTasks);
     } catch (error) {
       console.error('Error update tasks:', error);
     }
@@ -333,7 +307,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
           localStorage.setItem('tasks', JSON.stringify(updatedTasks));
         }
       }
-      await fetchTasks();
+      await fetchTasks(setTasks);
     } catch (error) {
       console.error('Error update Status Task', error);
     }
@@ -341,7 +315,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const handleGetData = async () => {
     await Promise.all([
-      fetchTasks(),
+      fetchTasks(setTasks),
       fetchStatuses(),
       fetchResponsibles(),
       fetchColumns(),

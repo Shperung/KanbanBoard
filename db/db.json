@@ -12,14 +12,14 @@
       "title": "Starlight",
       "responsible": "2",
       "description": "descr",
-      "status": "inProgress"
+      "status": "toDo"
     },
     {
       "id": "3",
       "title": "Homelander",
       "responsible": "3",
       "description": "descr",
-      "status": "toDo"
+      "status": "inProgress"
     },
     {
       "id": "4",
@@ -65,7 +65,7 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "3",
+        "2",
         "1"
       ]
     },
@@ -73,7 +73,7 @@
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
-        "2"
+        "3"
       ]
     },
     "done": {
