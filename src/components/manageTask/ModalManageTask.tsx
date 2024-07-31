@@ -99,9 +99,11 @@ export function ModalManageTask({isOpen, onClose, task}) {
             ))}
           </select>
         </label>
-        <button className='submitBtn' type='submit'>
-          {isEditTask ? 'Edit task' : 'Add new task'}
-        </button>
+        <footer className='modalFooter'>
+          <button className='submitBtn' type='submit'>
+            {isEditTask ? 'Edit task' : 'Add new task'}
+          </button>
+        </footer>
       </form>
     </Modal>
   );

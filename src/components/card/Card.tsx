@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import React, {useState} from 'react';
 import {Draggable} from 'react-beautiful-dnd';
 
@@ -10,10 +8,12 @@ import IconDelete from '../../assets/delete.svg';
 
 import './card.css';
 import {ModalManageTask} from '../manageTask/ModalManageTask';
+import {ModalDeleteTask} from '../manageTask/ModalDeletetask';
 
 export default function Card({task, index}) {
   const {tasks, statuses, responsibles, createTask} = useTasksContext();
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
 
   if (!task?.id) return null;
   const user = responsibles.find((user) => user.id === task?.responsible);
@@ -51,7 +51,10 @@ export default function Card({task, index}) {
             </div>
             <footer className='cardFooter'>
               <div>
-                <button className='cardActionBtn'>
+                <button
+                  onClick={() => setIsModalDeleteOpen(true)}
+                  className='cardActionBtn'
+                >
                   <img src={IconDelete} alt='Delete task' />
                 </button>
               </div>
@@ -68,11 +71,21 @@ export default function Card({task, index}) {
           </article>
         )}
       </Draggable>
-      <ModalManageTask
-        task={task}
-        isOpen={isModalEditOpen}
-        onClose={() => setIsModalEditOpen(false)}
-      />
+      {isModalEditOpen ? (
+        <ModalManageTask
+          task={task}
+          isOpen={isModalEditOpen}
+          onClose={() => setIsModalEditOpen(false)}
+        />
+      ) : null}
+      {isModalDeleteOpen ? (
+        <ModalDeleteTask
+          isOpen={isModalDeleteOpen}
+          onClose={() => setIsModalDeleteOpen(false)}
+          taskId={task.id}
+          columnId={task.status}
+        />
+      ) : null}
     </>
   );
 }

@@ -27,34 +27,6 @@
       "description": "This is a sample task. 4",
       "status": "done",
       "responsible": "2"
-    },
-    {
-      "id": "bbc1",
-      "title": "555555",
-      "description": "5555555",
-      "responsible": "3",
-      "status": "toDo"
-    },
-    {
-      "id": "5361",
-      "title": "33333",
-      "description": "333333",
-      "responsible": "1",
-      "status": "toDo"
-    },
-    {
-      "id": "de5c",
-      "title": "22222222",
-      "description": "22222222",
-      "responsible": "2",
-      "status": "toDo"
-    },
-    {
-      "id": "21f6",
-      "title": "777777777",
-      "description": "111111",
-      "responsible": "1",
-      "status": "toDo"
     }
   ],
   "statuses": [
@@ -93,7 +65,7 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "bbc1"
+        "4"
       ]
     },
     "inProgress": {
@@ -101,8 +73,9 @@
       "title": "In Progress",
       "taskIds": [
         "2",
-        "21f6",
-        "4",
+        "3",
+        "5361",
+        "1",
         "efac"
       ]
     },
@@ -110,10 +83,7 @@
       "id": "done",
       "title": "Done",
       "taskIds": [
-        "de5c",
-        "3",
-        "5361",
-        "1"
+        "de5c"
       ]
     }
   }

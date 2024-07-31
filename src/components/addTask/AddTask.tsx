@@ -16,7 +16,9 @@ export function AddTask() {
       <button onClick={openModal} className='addTaskBtn'>
         +
       </button>
-      <ModalManageTask isOpen={modalIsOpen} onClose={closeModal} />
+      {modalIsOpen ? (
+        <ModalManageTask isOpen={modalIsOpen} onClose={closeModal} />
+      ) : null}
     </>
   );
 }

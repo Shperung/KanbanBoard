@@ -39,5 +39,18 @@
 }
 
 .submitBtn {
+  background-color: var(--color-secondary);
+  width: 100%;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
   margin-top: 8px;
+  flex: 1;
+}
+
+.cancelBtn {
+  width: 100%;
 }
