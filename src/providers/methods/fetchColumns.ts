@@ -1,10 +1,10 @@
 import {api} from '../../api/api';
 import {logger} from '../../api/logger';
-import {TasksContextType} from '../taskaTypes';
+import {ColumnsType, TasksContextType} from '../taskaTypes';
 import {columnsSchema} from '../tasksSchema';
 
 export const fetchColumns = async (
-  setColumns: TasksContextType['setColumns']
+  setColumns: (columnsData: ColumnsType) => void
 ) => {
   const online = navigator.onLine;
   try {

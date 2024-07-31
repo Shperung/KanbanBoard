@@ -23,13 +23,12 @@ export type ColumnsType = z.infer<typeof columnsSchema>;
 
 export type TasksContextType = {
   tasks: TasksType;
-
   responsibles: ResponsiblesType;
   columns: ColumnsType;
+  createTask: (taskWithoutId: TaskWithoutIdType) => void;
+  deleteTask: (taskId: string, columnId: StatusColumnType) => void;
   setTasks: (tasks: TasksType) => void;
-  updateTask: (tasks: TasksType) => void;
-  setResponsibles: (responsibles: ResponsiblesType) => void;
-  setColumns: (columns: ColumnsType) => void;
+  updateTask: (task: TaskType) => void;
   updateStatusTask: (taskId: string, status: StatusColumnType) => void;
   saveColumns: (columns: ColumnsType) => void;
   saveNewTaskIdToColumn: (columnId: StatusColumnType, taskId: string) => void;

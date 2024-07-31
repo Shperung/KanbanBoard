@@ -8,7 +8,7 @@ export const deleteTaskMethod = async (
   taskId: string,
   columnId: StatusColumnType,
   columns: ColumnsType,
-  setColumns: TasksContextType['setColumns'],
+  setColumns: (columnsData: ColumnsType) => void,
   setTasks: TasksContextType['setTasks']
 ) => {
   try {

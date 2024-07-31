@@ -1,10 +1,10 @@
 import {api} from '../../api/api';
 import {logger} from '../../api/logger';
 import {responsiblesSchema} from '../responsiblesSchema';
-import {TasksContextType} from '../taskaTypes';
+import {ResponsiblesType} from '../responsiblesTypes';
 
 export const fetchResponsibles = async (
-  setResponsibles: TasksContextType['setResponsibles']
+  setResponsibles: (responsiblesData: ResponsiblesType) => void
 ) => {
   const online = navigator.onLine;
 

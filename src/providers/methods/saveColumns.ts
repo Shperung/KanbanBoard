@@ -6,7 +6,7 @@ import {fetchTasks} from './fetchTasks';
 
 export const saveColumnsMethod = async (
   columns: ColumnsType,
-  setColumns: TasksContextType['setColumns'],
+  setColumns: (validatedColumns: ColumnsType) => void,
   setTasks: TasksContextType['setTasks']
 ) => {
   try {

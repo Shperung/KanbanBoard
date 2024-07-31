@@ -5,7 +5,7 @@
       "title": "Butcher",
       "responsible": "1",
       "description": "descr",
-      "status": "toDo"
+      "status": "done"
     },
     {
       "id": "2",
@@ -23,10 +23,10 @@
     },
     {
       "id": "4",
-      "title": "4477",
+      "title": "55555",
       "responsible": "3",
-      "description": "fdfdsffdsg",
-      "status": "done"
+      "description": "555555",
+      "status": "inProgress"
     },
     {
       "id": "a345",
@@ -40,7 +40,7 @@
       "title": "dvsvdsv",
       "responsible": "3",
       "description": "dsvdsvsdvdsv",
-      "status": "done"
+      "status": "toDo"
     }
   ],
   "responsibles": [
@@ -66,7 +66,7 @@
       "title": "To Do",
       "taskIds": [
         "2",
-        "1"
+        "cf32"
       ]
     },
     "inProgress": {
@@ -74,15 +74,15 @@
       "title": "In Progress",
       "taskIds": [
         "3",
-        "a345"
+        "a345",
+        "4"
       ]
     },
     "done": {
       "id": "done",
       "title": "Done",
       "taskIds": [
-        "4",
-        "cf32"
+        "1"
       ]
     }
   }
