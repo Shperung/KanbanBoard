@@ -34,6 +34,13 @@
       "description": "111",
       "responsible": "1",
       "status": "toDo"
+    },
+    {
+      "id": "cf32",
+      "title": "dvsvdsv",
+      "responsible": "3",
+      "description": "dsvdsvsdvdsv",
+      "status": "done"
     }
   ],
   "responsibles": [
@@ -74,7 +81,8 @@
       "id": "done",
       "title": "Done",
       "taskIds": [
-        "4"
+        "4",
+        "cf32"
       ]
     }
   }

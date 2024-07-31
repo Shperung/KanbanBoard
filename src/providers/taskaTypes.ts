@@ -3,14 +3,17 @@ import {
   columnSchema,
   columnsSchema,
   statusColumnSchema,
-  taskShema,
+  taskSchema,
   tasksSchema,
+  taskWithoutIdSchema,
 } from './tasksSchema';
 import {ResponsiblesType} from './responsiblesTypes';
 
 export type StatusColumnType = z.infer<typeof statusColumnSchema>;
 
-export type TaskType = z.infer<typeof taskShema>;
+export type TaskType = z.infer<typeof taskSchema>;
+
+export type TaskWithoutIdType = z.infer<typeof taskWithoutIdSchema>;
 
 export type TasksType = z.infer<typeof tasksSchema>;
 
@@ -29,4 +32,5 @@ export type TasksContextType = {
   setColumns: (columns: ColumnsType) => void;
   updateStatusTask: (taskId: string, status: StatusColumnType) => void;
   saveColumns: (columns: ColumnsType) => void;
+  saveNewTaskIdToColumn: (columnId: StatusColumnType, taskId: string) => void;
 };

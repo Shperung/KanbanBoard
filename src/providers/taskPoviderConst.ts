@@ -30,4 +30,5 @@ export const INITIAL_CONTEXT: TasksContextType = {
   updateTask: () => {},
   updateStatusTask: () => {},
   saveColumns: () => {},
+  saveNewTaskIdToColumn: () => {},
 };

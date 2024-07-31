@@ -11,6 +11,8 @@ import {
   StatusColumnType,
   TasksContextType,
   TasksType,
+  TaskType,
+  TaskWithoutIdType,
 } from './taskaTypes';
 import {ResponsiblesType} from './responsiblesTypes';
 
@@ -19,6 +21,7 @@ import {fetchResponsibles} from './methods/fetchResponsibles';
 import {fetchColumns} from './methods/fetchColumns';
 import {INITIAL_CONTEXT} from './taskPoviderConst';
 import {saveColumnsMethod} from './methods/saveColumns';
+import {createTaskMethod} from './methods/createTaskMethod';
 
 const TasksContext = createContext<TasksContextType>(INITIAL_CONTEXT);
 
@@ -33,7 +36,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   /// methods ///
   const saveColumns = async (columns: ColumnsType) => {
-    saveColumnsMethod(columns, setColumns, setTasks);
+    await saveColumnsMethod(columns, setColumns, setTasks);
   };
 
   const saveNewTaskIdToColumn = async (
@@ -53,36 +56,13 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     await saveColumns(changedColumns);
   };
 
-  const createTask = async (task) => {
-    try {
-      const online = navigator.onLine;
-
-      if (online) {
-        const response = await fetch('http://localhost:3000/tasks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(task),
-        });
-        if (!response.ok) {
-          throw new Error('Error creating task');
-        }
-
-        const data = await response.json();
-        console.log('%c ||||| data', 'color:yellowgreen', data);
-        await fetchTasks(setTasks);
-        await saveNewTaskIdToColumn(data.status, data.id);
-      } else {
-        const offlineTasks = {...task, id: `${Date.now()}`};
-        console.log('%c ||||| offlineTasks', 'color:yellowgreen', offlineTasks);
-        localStorage.setItem('tasks', JSON.stringify([...tasks, offlineTasks]));
-        await fetchTasks(setTasks);
-        await saveNewTaskIdToColumn(offlineTasks.status, offlineTasks.id);
-      }
-    } catch (error) {
-      console.error('Error creating task:', error);
-    }
+  const createTask = async (taskWithoutId: TaskWithoutIdType) => {
+    await createTaskMethod(
+      taskWithoutId,
+      tasks,
+      setTasks,
+      saveNewTaskIdToColumn
+    );
   };
 
   const updateTask = async (task) => {
@@ -238,6 +218,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
         updateTask,
         deleteTask,
         updateStatusTask,
+        saveNewTaskIdToColumn,
       }}
     >
       {children}

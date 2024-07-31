@@ -2,7 +2,7 @@ import {z} from 'zod';
 
 export const statusColumnSchema = z.enum(['toDo', 'inProgress', 'done']);
 
-export const taskShema = z.object({
+export const taskSchema = z.object({
   id: z.string(),
   title: z.string(),
   responsible: z.string(),
@@ -10,7 +10,9 @@ export const taskShema = z.object({
   status: statusColumnSchema,
 });
 
-export const tasksSchema = z.array(taskShema);
+export const taskWithoutIdSchema = taskSchema.omit({id: true});
+
+export const tasksSchema = z.array(taskSchema);
 
 export const columnSchema = z.object({
   id: statusColumnSchema,
