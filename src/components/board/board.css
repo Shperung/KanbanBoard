@@ -7,6 +7,11 @@
   align-items: center;
 }
 
+.headerBoard {
+  display: flex;
+  justify-content: center;
+}
+
 .networkStatus {
   font-size: 0.5em;
 }

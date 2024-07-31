@@ -1,7 +1,25 @@
 .columnHeader {
   display: flex;
   align-items: center;
-  gap: 16px;
-  color: black;
+  gap: 12px;
+  color: var(--color-text-light);
   justify-content: center;
+  background-color: var(--color-dark);
+  height: 50px;
+  width: 300px;
+  margin: 8px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+.column {
+  margin: 8px;
+  border-radius: 6px;
+  width: 300px;
+  min-height: 83dvh;
+  background-color: var(--color-dark);
+}
+
+.cards {
+  padding: 10px 2px;
 }

@@ -1,4 +1,4 @@
-.Modal__Overlay {
+.modalOverlay {
   background-color: rgba(0, 0, 0, 0.75);
   position: fixed;
   z-index: 100;
@@ -7,21 +7,22 @@
   place-content: center;
 }
 
-.Modal__Content {
-  color: black;
-  width: 600px;
+.modalContent {
+  color: var(--color-text-light);
+  width: 320px;
   margin: auto;
   padding: 20px;
   position: relative;
-  background-color: white;
+  background-color: var(--color-background);
+  border-radius: 6px;
 }
 
-.Modal__CloseButton {
+.modalCloseButton {
   background: transparent;
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: black;
+  color: var(--color-text-light);
   padding: 0;
   height: 40px;
   width: 40px;

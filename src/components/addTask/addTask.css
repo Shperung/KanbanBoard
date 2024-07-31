@@ -1,8 +1,13 @@
 .addTaskBtn {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
+  opacity: 0.9;
   padding: 0;
   background-color: var(--color-secondary);
-  font-size: 32px;
+  font-size: 26px;
   line-height: 1;
+
+  &:hover {
+    opacity: 1;
+  }
 }

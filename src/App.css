@@ -1,46 +1,90 @@
-#root {
+:root {
+  --color-background: #4c5257;
+  --color-action: #686969;
+  --color-dark: #00101d;
+  --color-active-card: #464a51;
+  --color-border: #6b778c;
   --color-success: #01b587;
   --color-error: #ff4b4c;
-  --color-secondary: #023f66;
+  --color-secondary: #015387;
   --color-text: black;
-
-  max-width: 1280px;
+  --color-text-light: rgba(255, 255, 255, 0.87);
+  display: flex;
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--color-text-light);
+  background-color: var(--color-background);
+  color-scheme: dark;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+a {
+  font-weight: 500;
+  color: inherit;
+  text-decoration: inherit;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+  margin: 0 auto;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+h1 {
+  font-size: 1.8em;
+  line-height: 1.1;
+  margin-bottom: 0;
 }
 
-.card {
-  padding: 2em;
+button {
+  border-radius: 6px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: inherit;
+  margin: 0;
+  outline: none;
+  background-color: var(--color-action);
+}
+button:hover {
+  border-color: transparent;
+}
+button:focus,
+button:focus-visible {
+  outline: none;
 }
 
-.read-the-docs {
-  color: #888;
+input,
+select {
+  height: 40px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: none;
+  background-color: var(--color-dark);
+  appearance: none;
+  position: relative;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+select {
+  background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position: calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px), calc(100% - 37px) 6px;
+  background-size: 5px 5px, 5px 5px, 1px 27px;
+  background-repeat: no-repeat;
 }

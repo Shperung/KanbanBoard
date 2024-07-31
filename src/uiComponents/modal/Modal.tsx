@@ -1,4 +1,3 @@
-// src/components/ModalWrapper.tsx
 import React from 'react';
 import Modal from 'react-modal';
 import './modal.css';
@@ -22,11 +21,10 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className={`Modal__Content ${className || ''}`}
-      overlayClassName='Modal__Overlay'
-      contentLabel='Example Modal'
+      className={`modalContent ${className || ''}`}
+      overlayClassName='modalOverlay'
     >
-      <button onClick={onRequestClose} className='Modal__CloseButton'>
+      <button onClick={onRequestClose} className='modalCloseButton'>
         &times;
       </button>
       {children}

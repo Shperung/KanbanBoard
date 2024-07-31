@@ -11,30 +11,26 @@ export function Column({column, tasks, index}) {
   const isTodo = column.id === 'toDo';
 
   return (
-    <Droppable droppableId={column.id} type='TASK'>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          style={{
-            margin: 8,
-            border: '1px solid lightgray',
-            borderRadius: 4,
-            width: 250,
-            minHeight: 500,
-            backgroundColor: 'white',
-            padding: 8,
-          }}
-        >
-          <h3 className='columnHeader'>
-            <span>{column.title}</span> {isTodo ? <AddTask /> : null}
-          </h3>
-          {tasks.map((task, index) => (
-            <Card key={task?.id} task={task} index={index} />
-          ))}
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
+    <section>
+      <h3 className='columnHeader'>
+        <span>{column.title}</span> {isTodo ? <AddTask /> : null}
+      </h3>
+      <Droppable droppableId={column.id} type='TASK'>
+        {(provided) => (
+          <section
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className='column'
+          >
+            <div className='cards'>
+              {tasks.map((task, index) => (
+                <Card key={task?.id} task={task} index={index} />
+              ))}
+            </div>
+            {provided.placeholder}
+          </section>
+        )}
+      </Droppable>
+    </section>
   );
 }

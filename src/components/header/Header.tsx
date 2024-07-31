@@ -8,8 +8,8 @@ export function Header() {
     </sup>
   );
   return (
-    <header>
-      <h1>Kanban board1 {networkStatusLabel}</h1>
+    <header className='headerBoard'>
+      <h1>Kanban Board {networkStatusLabel}</h1>
     </header>
   );
 }
