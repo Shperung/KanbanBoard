@@ -5,7 +5,7 @@ import {ColumnsType, TasksContextType} from '../taskaTypes';
 import {columnsSchema} from '../tasksSchema';
 
 export const fetchColumns = async (
-  setColumns: (columnsData: ColumnsType) => void
+  saveColumns: (columns: ColumnsType) => void
 ) => {
   const online = navigator.onLine;
   try {
@@ -14,10 +14,16 @@ export const fetchColumns = async (
 
       // zod validation
       const columnsData = columnsSchema.parse(dataApi);
-
       const serverColumnToString = JSON.stringify(columnsData);
-
       const localSorageColumns = localStorage.getItem('columns');
+
+      console.log('%c ||||| columnsData', 'color:yellowgreen', columnsData);
+
+      console.log(
+        '%c ||||| serverColumnToString',
+        'color:yellowgreen',
+        serverColumnToString
+      );
 
       console.log(
         '%c ||||| localSorageColumns',
@@ -25,11 +31,6 @@ export const fetchColumns = async (
         localSorageColumns
       );
 
-      console.log(
-        '%c ||||| serverColumnToString',
-        'color:yellowgreen',
-        serverColumnToString
-      );
       const isEqualStingifyColumns =
         localSorageColumns === serverColumnToString;
 
@@ -39,9 +40,15 @@ export const fetchColumns = async (
         isEqualStingifyColumns
       );
 
-      const localSorageColumnsData = JSON.parse(localSorageColumns);
+      const localSorageColumnsData = localSorageColumns
+        ? JSON.parse(localSorageColumns)
+        : null;
 
-      if (!isEqualStingifyColumns) {
+      if (
+        localSorageColumns &&
+        serverColumnToString &&
+        !isEqualStingifyColumns
+      ) {
         const mergedColumns = mergeColumnData(
           localSorageColumnsData,
           columnsData
@@ -54,13 +61,12 @@ export const fetchColumns = async (
         );
 
         if (mergedColumns) {
-          await setColumns(mergedColumns);
           localStorage.setItem('columns', JSON.stringify(mergedColumns));
-          setColumns(mergedColumns);
+          await saveColumns(mergedColumns);
         }
       } else {
         localStorage.setItem('columns', serverColumnToString);
-        setColumns(columnsData);
+        await saveColumns(columnsData);
       }
     } else {
       const dataStorage = localStorage.getItem('columns');
@@ -68,7 +74,7 @@ export const fetchColumns = async (
         // zod validation
         const columnsData = columnsSchema.parse(JSON.parse(dataStorage));
 
-        if (columnsData) setColumns(columnsData);
+        if (columnsData) await saveColumns(columnsData);
       }
     }
   } catch (error) {

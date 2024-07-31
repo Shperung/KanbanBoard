@@ -25,8 +25,34 @@ import {createTaskMethod} from './methods/createTaskMethod';
 import {updateTaskMethod} from './methods/updateTaskMethod';
 import {deleteTaskMethod} from './methods/deleteTaskMethod';
 import {updateStatusTaskMethod} from './methods/updateStatusTaskMethod';
+import {tasksSchema} from './tasksSchema';
+import {api} from '../api/api';
 
 const TasksContext = createContext<TasksContextType>(INITIAL_CONTEXT);
+
+const getTasksFromStorage = async () => {
+  const dataStorage = localStorage.getItem('tasks');
+  if (dataStorage) {
+    // zod validation
+    const tasksData = tasksSchema.parse(JSON.parse(dataStorage));
+    if (tasksData) {
+      return tasksData;
+    }
+  }
+
+  return null;
+};
+
+function getUniqueTask(
+  tasksDataApi: TasksContextType['tasks'],
+  tasksFromStorage: TasksContextType['tasks']
+) {
+  const aIds = new Set(tasksDataApi.map((item) => item.id));
+
+  return tasksFromStorage
+    .filter((item) => !aIds.has(item.id))
+    .map(({id, ...rest}) => rest);
+}
 
 export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   /// properties ///
@@ -46,6 +72,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     columnId: StatusColumnType,
     taskId: string
   ) => {
+    console.log('%c ||||| columns', 'color:yellowgreen', columns);
     const currentColumn = columns[columnId]?.taskIds || [];
     const uniqueTaskIds = [...new Set([...currentColumn, taskId])];
     const changedColumns = {
@@ -80,11 +107,33 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     await updateStatusTaskMethod(taskId, status, setTasks);
   };
 
+  const mergeTasks = async () => {
+    // try set task from local to DB
+    const tasksFromStorage = await getTasksFromStorage();
+
+    const newtasksFromStorage = tasksFromStorage
+      ? getUniqueTask(tasks, tasksFromStorage)
+      : [];
+
+    console.log(
+      '%c ||||| newtasksFromStorage',
+      'color:yellowgreen',
+      newtasksFromStorage
+    );
+
+    if (newtasksFromStorage.length > 0) {
+      await Promise.all(
+        newtasksFromStorage.map((item) => api('tasks', 'POST', item))
+      );
+    }
+  };
+
   const handleGetData = async () => {
     await Promise.all([
       fetchTasks(setTasks),
       fetchResponsibles(setResponsibles),
-      fetchColumns(setColumns),
+      fetchColumns(saveColumns),
+      mergeTasks(),
     ]);
   };
 
