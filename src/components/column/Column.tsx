@@ -10,8 +10,6 @@ import {AddTask} from '../addTask/AddTask';
 export function Column({column, tasks, index}) {
   const isTodo = column.id === 'toDo';
 
-  console.log('%c ||||| tasks', 'color:yellowgreen', tasks);
-
   return (
     <section>
       <h3 className='columnHeader'>

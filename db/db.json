@@ -2,35 +2,31 @@
   "tasks": [
     {
       "id": "1",
-      "title": "Sample Task 1111111",
+      "title": "Butcher",
       "responsible": "1",
-      "description": "This is a sample task. 1",
-      "position": 2,
+      "description": "descr",
       "status": "toDo"
     },
     {
       "id": "2",
-      "title": "Sample Task 2",
+      "title": "Starlight",
       "responsible": "2",
-      "description": "This is a sample task. 2",
-      "position": 1,
+      "description": "descr",
       "status": "inProgress"
     },
     {
       "id": "3",
-      "title": "Sample Task 3",
+      "title": "Homelander",
       "responsible": "3",
-      "description": "This is a sample task. 3",
-      "position": 0,
+      "description": "descr",
       "status": "toDo"
     },
     {
       "id": "4",
-      "title": "Sample Task 4",
-      "responsible": "2",
-      "description": "This is a sample task. 4",
-      "position": 1,
-      "status": "inProgress"
+      "title": "4477",
+      "responsible": "3",
+      "description": "fdfdsffdsg",
+      "status": "done"
     }
   ],
   "statuses": [
@@ -77,14 +73,15 @@
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
-        "2",
-        "4"
+        "2"
       ]
     },
     "done": {
       "id": "done",
       "title": "Done",
-      "taskIds": []
+      "taskIds": [
+        "4"
+      ]
     }
   }
 }

@@ -1,106 +1,14 @@
-import {useEffect, useMemo, useState} from 'react';
 import {useTasksContext} from '../providers/TasksProvider';
-import {mergeColumnsData} from '../helpers/mergeColumnsData';
 import {normalizeData} from '../helpers/normalizeData';
-import {StatusColumnType} from '../providers/taskaTypes';
-
-const TASK_IDS: string[] = [];
-
-const INIT_COLUMNS = {
-  toDo: {
-    id: 'toDo',
-    title: 'To Do',
-    taskIds: TASK_IDS,
-  },
-  inProgress: {
-    id: 'inProgress',
-    title: 'In Progress',
-    taskIds: TASK_IDS,
-  },
-  done: {
-    id: 'done',
-    title: 'Done',
-    taskIds: TASK_IDS,
-  },
-};
 
 export function useTasks() {
-  const {tasks, columns, updateStatusTask, saveTasksPositions, updateTask} =
+  const {tasks, columns, updateStatusTask, saveTasksPositions} =
     useTasksContext();
 
-  const [normalizedTasks, normalizedTasksList] = normalizeData(tasks);
-
-  //const [columnsBoard, setColumnsBoard] = useState(INIT_COLUMNS);
-
-  // const toDoTaskIds = useMemo(
-  //   () =>
-  //     tasks
-  //       .filter((task) => task.status === 'toDo')
-  //       .toSorted((a, b) => b.position - a.position)
-  //       .map((task) => task.id),
-  //   [tasks]
-  // );
-
-  // const inProgressTaskIds = useMemo(
-  //   () =>
-  //     tasks
-  //       .filter((task) => task.status === 'inProgress')
-  //       .toSorted((a, b) => b.position - a.position)
-  //       .map((task) => task.id),
-  //   [tasks]
-  // );
-
-  // const doneTaskIds = useMemo(
-  //   () =>
-  //     tasks
-  //       .filter((task) => task.status === 'done')
-  //       .toSorted((a, b) => b.position - a.position)
-  //       .map((task) => task.id),
-  //   [tasks]
-  // );
-
-  // useEffect(() => {
-  //   setColumnsBoard({
-  //     ...INIT_COLUMNS,
-  //     toDo: {
-  //       ...INIT_COLUMNS.toDo,
-  //       taskIds: toDoTaskIds,
-  //     },
-  //     inProgress: {
-  //       ...INIT_COLUMNS.inProgress,
-  //       taskIds: inProgressTaskIds,
-  //     },
-  //     done: {
-  //       ...INIT_COLUMNS.done,
-  //       taskIds: doneTaskIds,
-  //     },
-  //   });
-  // }, [toDoTaskIds, inProgressTaskIds, doneTaskIds]);
-
-  // const handleUpdateTask = async (
-  //   taskId: string,
-  //   status: StatusColumnType,
-  //   position: number
-  // ) => {
-  //   const currentTask = normalizedTasks[taskId];
-  //   if (currentTask) {
-  //     const updatedCurrentTask = {
-  //       ...currentTask,
-  //       status,
-  //       position,
-  //     };
-  //     await updateTask(updatedCurrentTask);
-  //   }
-  // };
+  const [normalizedTasks] = normalizeData(tasks);
 
   const onDragEnd = async (result) => {
     const {destination, source, draggableId} = result;
-
-    console.log('%c ||||| draggableId', 'color:yellowgreen', draggableId);
-
-    console.log('%c ||||| source', 'color:yellowgreen', source);
-
-    console.log('%c ||||| destination', 'color:yellowgreen', destination);
 
     if (!destination) {
       return;
@@ -115,8 +23,6 @@ export function useTasks() {
 
     const startColumn = columns[source.droppableId];
     const finishColumn = columns[destination.droppableId];
-    // const startColumn = columnsBoard[source.droppableId];
-    // const finishColumn = columnsBoard[destination.droppableId];
 
     if (startColumn === finishColumn) {
       // if move in same column
@@ -134,20 +40,8 @@ export function useTasks() {
         [newColumn.id]: newColumn,
       };
 
-      // const newColumnsData = {
-      //   ...columnsBoard,
-      //   [newColumn.id]: newColumn,
-      // };
-
       await saveTasksPositions(newColumnsData);
-      // await handleUpdateTask(
-      //   draggableId,
-      //   destination.droppableId,
-      //   destination.index
-      // );
-
       await updateStatusTask(draggableId, destination.droppableId);
-      //setColumnsBoard(newColumnsData);
 
       return;
     }
@@ -173,23 +67,9 @@ export function useTasks() {
       [newFinish.id]: newFinish,
     };
     await saveTasksPositions(newColumnsData);
-    // await handleUpdateTask(
-    //   draggableId,
-    //   destination.droppableId,
-    //   destination.index
-    // );
 
     await updateStatusTask(draggableId, destination.droppableId);
-
-    // const newColumnsData = {
-    //   ...columnsBoard,
-    //   [newStart.id]: newStart,
-    //   [newFinish.id]: newFinish,
-    // };
-
-    // setColumnsBoard(newColumnsData);
   };
 
-  // return {columns: columnsBoard, onDragEnd, normalizedTasks};
   return {columns, onDragEnd, normalizedTasks};
 }

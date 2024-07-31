@@ -45,7 +45,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const fetchTasks = async () => {
     // Перевірка наявності інтернет-з'єднання
     const online = navigator.onLine;
-    console.log('%c  online fetchTasks', 'color:pink', online);
 
     try {
       if (online) {
@@ -71,7 +70,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   // Метод для отримання statuses з API
   const fetchStatuses = async () => {
     const online = navigator.onLine;
-    console.log('%c  online fetchStatuses', 'color:pink', online);
     try {
       if (online) {
         const response = await fetch('http://localhost:3000/statuses');
@@ -91,7 +89,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   // Метод для отримання statuses з API
   const fetchColumns = async () => {
     const online = navigator.onLine;
-    console.log('%c  online fetchColumns', 'color:pink', online);
     try {
       if (online) {
         const response = await fetch('http://localhost:3000/columns');
@@ -132,7 +129,6 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const fetchResponsibles = async () => {
     const online = navigator.onLine;
 
-    console.log('%c  online fetchResponsibles', 'color:pink', online);
     try {
       if (online) {
         const response = await fetch('http://localhost:3000/responsibles');

@@ -13,8 +13,7 @@ const Board = () => {
   if (!columns) return null;
 
   const columnsKeys = Object.keys(columns);
-  console.log('%c ||||| columns', 'color:yellowgreen', columns);
-  console.log('%c ||||| columnsKeys', 'color:yellowgreen', columnsKeys);
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Header />
