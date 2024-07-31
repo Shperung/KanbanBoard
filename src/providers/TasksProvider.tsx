@@ -23,6 +23,7 @@ import {INITIAL_CONTEXT} from './taskPoviderConst';
 import {saveColumnsMethod} from './methods/saveColumns';
 import {createTaskMethod} from './methods/createTaskMethod';
 import {updateTaskMethod} from './methods/updateTaskMethod';
+import {deleteTaskMethod} from './methods/deleteTaskMethod';
 
 const TasksContext = createContext<TasksContextType>(INITIAL_CONTEXT);
 
@@ -70,61 +71,8 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     await updateTaskMethod(task, setTasks);
   };
 
-  const deleteTask = async (taskId: string, columnId: string) => {
-    console.log('%c ||||| taskId', 'color:yellowgreen', taskId);
-    console.log('%c ||||| columnId', 'color:yellowgreen', columnId);
-    try {
-      const online = navigator.onLine;
-      console.log('%c ||||| 222', 'color:yellowgreen', 222);
-      if (online) {
-        const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Error delete tasks');
-        }
-      } else {
-        const data = localStorage.getItem('tasks');
-        console.log('%c ||||| 111', 'color:yellowgreen', 111);
-        if (data) {
-          const tasks = JSON.parse(data);
-          const updatedTasks = tasks.filter((item) => item.id !== taskId);
-          localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-        }
-      }
-
-      if (columnId) {
-        const currectCollumns = online
-          ? columns
-          : JSON.parse(localStorage.getItem('columns'));
-
-        console.log(
-          '%c ||||| currectCollumns',
-          'color:yellowgreen',
-          currectCollumns
-        );
-        const currentColumnTaskIds = currectCollumns[columnId]?.taskIds;
-        console.log(
-          '%c ||||| currentColumnTaskIds',
-          'color:yellowgreen',
-          currentColumnTaskIds
-        );
-        const newColumn = currentColumnTaskIds.filter((id) => id !== taskId);
-        const changedColumns = {
-          ...currectCollumns,
-          [columnId]: {
-            ...currectCollumns[columnId],
-            taskIds: newColumn,
-          },
-        };
-        await saveColumns(changedColumns);
-      }
-    } catch (error) {
-      console.error('Error delete tasks:', error);
-    }
+  const deleteTask = async (taskId: string, columnId: StatusColumnType) => {
+    await deleteTaskMethod(taskId, columnId, columns, setColumns, setTasks);
   };
 
   const updateStatusTask = async (taskId: string, status: StatusColumnType) => {
