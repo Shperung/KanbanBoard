@@ -5,21 +5,21 @@
       "title": "Butcher",
       "responsible": "1",
       "description": "descr",
-      "status": "inProgress"
+      "status": "toDo"
     },
     {
       "id": "2",
       "title": "Starlight",
       "responsible": "2",
       "description": "descr",
-      "status": "inProgress"
+      "status": "toDo"
     },
     {
       "id": "3",
       "title": "Homelander",
       "responsible": "3",
       "description": "descr1",
-      "status": "toDo"
+      "status": "inProgress"
     },
     {
       "id": "4",
@@ -51,15 +51,15 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "3"
+        "2",
+        "1"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
-        "1",
-        "2"
+        "3"
       ]
     },
     "done": {

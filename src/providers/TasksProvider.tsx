@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, {
   createContext,
   useState,
@@ -13,12 +12,32 @@ import {ResponsiblesType} from './responsiblesTypes';
 import {tasksSchema} from './tasksSchema';
 import {fetchTasks} from './methods/fetchTasks';
 import {fetchResponsibles} from './methods/fetchResponsibles';
+import {fetchColumns} from './methods/fetchColumns';
+
+const TASK_IDS: string[] = [];
+
+const INIT_COLUMNS = {
+  toDo: {
+    id: 'toDo',
+    title: 'To Do',
+    taskIds: TASK_IDS,
+  },
+  inProgress: {
+    id: 'inProgress',
+    title: 'In Progress',
+    taskIds: TASK_IDS,
+  },
+  done: {
+    id: 'done',
+    title: 'Done',
+    taskIds: TASK_IDS,
+  },
+} as const;
 
 const INITIAL_CONTEXT: TasksContextType = {
   tasks: [],
-  statuses: [],
   responsibles: [],
-  columns: null,
+  columns: INIT_COLUMNS,
   setTasks: () => {},
   setResponsibles: () => {},
   setColumns: () => {},
@@ -37,46 +56,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [responsibles, setResponsibles] = useState<ResponsiblesType>(
     INITIAL_CONTEXT.responsibles
   );
-  const [columns, setColumns] = useState(null);
-
-  // Метод для отримання statuses з API
-  const fetchColumns = async () => {
-    const online = navigator.onLine;
-    try {
-      if (online) {
-        const response = await fetch('http://localhost:3000/columns');
-        const data = await response.json();
-
-        const localSorageColumns = localStorage.getItem('columns');
-
-        const localSorageColumnsData = JSON.parse(localSorageColumns);
-        const serverColumnToString = JSON.stringify(data);
-
-        const isEqualStingifyColumns =
-          localSorageColumns === serverColumnToString;
-
-        if (!isEqualStingifyColumns) {
-          const mergedColumns = mergeColumnsData(localSorageColumnsData, data);
-
-          if (mergedColumns) {
-            await saveTasksPositions(mergedColumns);
-            localStorage.setItem('columns', JSON.stringify(mergedColumns));
-            setColumns(mergedColumns);
-          }
-        } else {
-          localStorage.setItem('columns', JSON.stringify(data));
-          setColumns(data);
-        }
-      } else {
-        const data = localStorage.getItem('columns');
-        if (data) {
-          setColumns(JSON.parse(data));
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching columns:', error);
-    }
-  };
+  const [columns, setColumns] = useState(INITIAL_CONTEXT.columns);
 
   const saveTasksPositions = async (columns) => {
     try {
@@ -275,7 +255,7 @@ export const TasksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     await Promise.all([
       fetchTasks(setTasks),
       fetchResponsibles(setResponsibles),
-      fetchColumns(),
+      fetchColumns(setColumns),
     ]);
   };
 

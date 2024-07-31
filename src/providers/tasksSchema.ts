@@ -12,9 +12,10 @@ export const taskShema = z.object({
 
 export const tasksSchema = z.array(taskShema);
 
-export const statusShema = z.object({
-  name: z.string(),
+export const columnSchema = z.object({
   id: statusColumnSchema,
+  title: z.string(),
+  taskIds: z.array(z.string()),
 });
 
-export const statusesSchema = z.array(statusShema);
+export const columnsSchema = z.record(statusColumnSchema, columnSchema);

@@ -1,8 +1,8 @@
 import type {z} from 'zod';
 import {
+  columnSchema,
+  columnsSchema,
   statusColumnSchema,
-  statusesSchema,
-  statusShema,
   taskShema,
   tasksSchema,
 } from './tasksSchema';
@@ -14,19 +14,19 @@ export type TaskType = z.infer<typeof taskShema>;
 
 export type TasksType = z.infer<typeof tasksSchema>;
 
-export type StatusType = z.infer<typeof statusShema>;
+export type ColumnType = z.infer<typeof columnSchema>;
 
-export type StatusesType = z.infer<typeof statusesSchema>;
+export type ColumnsType = z.infer<typeof columnsSchema>;
 
 export type TasksContextType = {
   tasks: TasksType;
-  statuses: StatusesType;
+
   responsibles: ResponsiblesType;
-  columns: StatusesType;
+  columns: ColumnsType;
   setTasks: (tasks: TasksType) => void;
   updateTask: (tasks: TasksType) => void;
   setResponsibles: (responsibles: ResponsiblesType) => void;
-  setColumns: (columns: any) => void;
+  setColumns: (columns: ColumnsType) => void;
   updateStatusTask: (taskId: string, status: StatusColumnType) => void;
-  saveTasksPositions: (columns: any) => void;
+  saveTasksPositions: (columns: ColumnsType) => void;
 };
