@@ -86,14 +86,14 @@
   margin-left: auto;
   opacity: 0.9;
   background-color: var(--color-action);
+}
 
-  &:hover {
-    opacity: 1;
-  }
+.cardActionBtn img {
+  width: 16px;
+  height: 16px;
+  margin: 0 auto;
+}
 
-  img {
-    width: 16px;
-    height: 16px;
-    margin: 0 auto;
-  }
+.cardActionBtn:hover {
+  opacity: 1;
 }
