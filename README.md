@@ -4,10 +4,10 @@
 
 ```
 npm install
+npm run server
 npm start
+
+visit - http://localhost:8080/
 ```
 
 Outputs the site to `/dist`
-
-Buid docker
-`docker build . -t "kanban-board:v1.0"`

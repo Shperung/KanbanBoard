@@ -5,7 +5,7 @@
       "title": "Butcher",
       "responsible": "1",
       "description": "descr",
-      "status": "done"
+      "status": "toDo"
     },
     {
       "id": "2",
@@ -18,29 +18,8 @@
       "id": "3",
       "title": "Homelander",
       "responsible": "3",
-      "description": "descr1",
+      "description": "descr",
       "status": "done"
-    },
-    {
-      "id": "4",
-      "title": "55555",
-      "responsible": "3",
-      "description": "555555",
-      "status": "toDo"
-    },
-    {
-      "id": "a345",
-      "title": "Butcher 2",
-      "responsible": "1",
-      "description": "2222222",
-      "status": "done"
-    },
-    {
-      "id": "cf32",
-      "title": "dvsvdsv",
-      "responsible": "3",
-      "description": "dsvdsvsdvdsv",
-      "status": "inProgress"
     }
   ],
   "responsibles": [
@@ -65,23 +44,20 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "4"
+        "1"
       ]
     },
     "inProgress": {
       "id": "inProgress",
       "title": "In Progress",
       "taskIds": [
-        "2",
-        "cf32"
+        "2"
       ]
     },
     "done": {
       "id": "done",
       "title": "Done",
       "taskIds": [
-        "1",
-        "a345",
         "3"
       ]
     }
