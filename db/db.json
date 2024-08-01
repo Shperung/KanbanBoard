@@ -19,7 +19,7 @@
       "title": "Homelander",
       "responsible": "3",
       "description": "descr1",
-      "status": "inProgress"
+      "status": "done"
     },
     {
       "id": "4",
@@ -40,7 +40,7 @@
       "title": "dvsvdsv",
       "responsible": "3",
       "description": "dsvdsvsdvdsv",
-      "status": "toDo"
+      "status": "inProgress"
     }
   ],
   "responsibles": [
@@ -65,7 +65,6 @@
       "id": "toDo",
       "title": "To Do",
       "taskIds": [
-        "cf32",
         "4"
       ]
     },
@@ -74,7 +73,7 @@
       "title": "In Progress",
       "taskIds": [
         "2",
-        "3"
+        "cf32"
       ]
     },
     "done": {
@@ -82,7 +81,8 @@
       "title": "Done",
       "taskIds": [
         "1",
-        "a345"
+        "a345",
+        "3"
       ]
     }
   }

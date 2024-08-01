@@ -16,27 +16,6 @@ export const fetchColumns = async (
 
       localStorage.setItem('columns', JSON.stringify(columnsData));
       setColumns(columnsData);
-
-      // const localSorageColumns = localStorage.getItem('columns');
-
-      // const localSorageColumnsData = JSON.parse(localSorageColumns);
-      // const serverColumnToString = JSON.stringify(data);
-
-      // const isEqualStingifyColumns =
-      //   localSorageColumns === serverColumnToString;
-
-      // if (!isEqualStingifyColumns) {
-      //   const mergedColumns = mergeColumnsData(localSorageColumnsData, data);
-
-      //   if (mergedColumns) {
-      //     await saveColumns(mergedColumns);
-      //     localStorage.setItem('columns', JSON.stringify(mergedColumns));
-      //     setColumns(mergedColumns);
-      //   }
-      // } else {
-      //   localStorage.setItem('columns', JSON.stringify(data));
-      //   setColumns(data);
-      // }
     } else {
       const dataStorage = localStorage.getItem('columns');
       if (dataStorage) {
